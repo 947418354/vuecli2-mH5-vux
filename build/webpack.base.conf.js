@@ -3,14 +3,15 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const vuxLoader = require('vux-loader')
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
 
 
-module.exports = {
+const webpackBaseConfig = {
   context: path.resolve(__dirname, '../'),
   entry: {
     app: './src/main.js'
@@ -80,3 +81,16 @@ module.exports = {
     child_process: 'empty'
   }
 }
+
+module.exports = vuxLoader.merge(webpackBaseConfig, {
+  plugins: [
+    // {
+    //   name: 'less-theme',
+    //   path: 'src/theme/vuxTheme/blue_theme.less' //启用真意的红色主题
+    // },
+    { name: 'vux-ui' },
+    // { name: 'inline-manifest' },
+    // { name: 'progress-bar' },
+    // { name: 'duplicate-style' }
+  ]
+})

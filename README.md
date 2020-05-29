@@ -1,6 +1,6 @@
-# vuecli2-raw
+# vuecli2-mH5-vux
 
-> A Vue.js project
+> A Vue.js project,ui组件库采用移动端组件库vux
 
 # 参考点
 postcss配置

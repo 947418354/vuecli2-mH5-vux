@@ -11,6 +11,13 @@ export default new Router({
       path: '/',
       name: 'postcss',
       component: postcss
+    },
+    {
+      path: '/microShop',
+      name: 'microShop',
+      components: {
+        default: () => import(/* webpackChunkName: "microShop" */'../pages/microShop/microShop.vue')
+      }
     }
   ]
 })
