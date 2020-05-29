@@ -4,6 +4,7 @@
 
 # 参考点
 postcss配置
+vux移动端组件库
 
 ## Build Setup
 
