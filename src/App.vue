@@ -11,6 +11,9 @@ export default {
 </script>
 
 <style>
+/**
+全局样式
+ */
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -22,6 +25,8 @@ export default {
 }
 .page {
   padding-top: 60px;
+  height: 100%;
+  box-sizing: border-box;
 }
 .p-title {
   width: 100%;
@@ -30,5 +35,13 @@ export default {
   background: #062;
   top: 0;
   left: 0;
+}
+
+.inline-block {
+  display: inline-block;
+}
+.img-box > img {
+  width: 100%;
+  height: 100%;
 }
 </style>
