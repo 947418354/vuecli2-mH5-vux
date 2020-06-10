@@ -1,22 +1,31 @@
 <template>
-  <div class="page browser-page">
-    <div class="browser-block">
-      <div class="browser-container">
+  <div class="page comment-list-page">
+    <div>
+      <div class="comment-list-container">
         <MescrollVue :down="mescrollDown" :up="mescrollUp" class="scroll-cont" @init="mescrollInit">
-          <div class="item" v-for="(ele, i) of browserList" :key="ele.id">
-            <!-- <div class="inline-block">{{ele.id}}</div> -->
-            <div class="inline-block">
-              <div class="img-box">
-                <img src="https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg" alt />
+          <div class="item" v-for="(item, i) of browserList" :key="item.id">
+            <div>
+              <div class="info-container">
+                <div>
+                  <div class="img-box"><img :src="item.headerUrl" alt=""></div>
+                </div>
+                <div>
+                  <div>昵称</div>
+                  <div>{{item.dateTime}}</div>
+                </div>
               </div>
+              <div>
+                <span>评分: </span><Rater v-model="item.score" disabled></Rater>
+              </div>
+              <div class="comment-divtext">评论文字很长的评论评论文字很长的评论评论文字很长的评论评论文字很长的评论评论文字很长的评论评论文字很长的评论评论文字很长的评论</div>
             </div>
-            <div class="inline-block">昵称</div>
-            <div class="browser-action inline-block">浏览动作</div>
-            <div class="inline-block">2020/06/06 22:00:00</div>
+            <div>
+              <XSwitch v-model="item.isShow" title=""></XSwitch>
+              <div>{{formatterIsShow(item.isShow)}}</div>
+            </div>
           </div>
           <!-- 无数据时,此元素将被索引到,被给他插入孩纸 -->
-          <div id="nodata" class="m-list-nodata">
-          </div>
+          <div id="nodata" class="m-list-nodata"></div>
         </MescrollVue>
       </div>
     </div>
@@ -25,9 +34,10 @@
 
 <script>
 /**
- * 浏览痕迹页
+评价列表页
  */
 import MescrollVue from "mescroll.js/mescroll";
+import { XSwitch, Rater  } from 'vux'
 
 export default {
   data() {
@@ -42,7 +52,7 @@ export default {
         callback: this.upCallback,
         noMoreSize: 1, // 如果列表已无数据,可设置列表的总数量要大于1页的数量才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看
         page: {
-          size: 15
+          size: 10
         },
         empty: {
           // 列表第一页无任何数据时,显示的空提示布局; 需配置warpId才生效;
@@ -55,7 +65,9 @@ export default {
     };
   },
   components: {
-    MescrollVue
+    MescrollVue,
+    XSwitch,
+    Rater 
   },
   methods: {
     mescrollInit(mescroll) {
@@ -70,12 +82,15 @@ export default {
         const behandList = [];
         for (let i = 0; i < page.size; i++) {
           behandList.push({
-            id: page.num * page.size + i + "",
+            id: (page.num - 1) * page.size + i + "",
             headerUrl:
               "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg",
             nickName: "昵称",
             action: "浏览行为",
-            dateTime: "2020/06/06 22:00:00"
+            dateTime: "2020/06/06 22:00:00",
+            comment: '文字评价',
+            score: 2.5,
+            isShow: false,
           });
         }
         const resultContent = {
@@ -116,33 +131,38 @@ export default {
         .catch(err => {
           console.log("发生错误：", err);
         });*/
+    },
+    formatterIsShow(isShow) {
+      return isShow ? '公开' : '未公开'
     }
   }
 };
 </script>
 
 <style lang="less">
-.browser-page {
-  .browser-block {
-    height: 100%;
-  }
-  .browser-container {
-    height: 100%;
-    .scroll-cont {
-      background: pink;
-    }
+.comment-list-page {
+  .comment-list-container {
     .item {
+      display: flex;
+      justify-content: space-between;
       margin: 10px;
+      background: #eee;
+      border-radius: 5px;
+      padding: 10px;
     }
-    .item > .inline-block {
-      vertical-align: middle;
+    .info-container {
+      display: flex;
+      .img-box {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+      }
     }
-    .img-box {
-      width: 50px;
-      height: 50px;
+    .comment-divtext {
+      text-align: left;
     }
-    .browser-action {
-      color: #bbb;
+    .vux-x-switch {
+      transform: scale(0.8);
     }
   }
 }

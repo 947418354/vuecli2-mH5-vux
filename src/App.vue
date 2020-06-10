@@ -18,7 +18,6 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   width: 100%;
   height: 100%;
@@ -27,6 +26,9 @@ export default {
   padding-top: 60px;
   height: 100%;
   box-sizing: border-box;
+}
+.page > div {
+  padding: 10px;
 }
 .p-title {
   width: 100%;

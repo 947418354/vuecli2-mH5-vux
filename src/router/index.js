@@ -26,6 +26,22 @@ export default new Router({
         default: () => import(/* webpackChunkName: "browser" */'@/pages/eCard/browser')
       },
     },
+    // 电子名片浏览记录详情页
+    {
+      path: '/browserDetail',
+      name: 'browserDetail',
+      components: {
+        default: () => import(/* webpackChunkName: "browserDetail" */'@/pages/eCard/browserDetail')
+      },
+    },
+    // 电子名片评论列表页
+    {
+      path: '/comment',
+      name: 'comment',
+      components: {
+        default: () => import(/* webpackChunkName: "comment" */'@/pages/eCard/comment')
+      },
+    },
     {
       path: '/microShop',
       name: 'microShop',

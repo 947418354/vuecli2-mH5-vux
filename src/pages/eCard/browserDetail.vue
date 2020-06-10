@@ -1,23 +1,31 @@
 <template>
-  <div class="page browser-page">
-    <div class="browser-block">
-      <div class="browser-container">
-        <MescrollVue :down="mescrollDown" :up="mescrollUp" class="scroll-cont" @init="mescrollInit">
-          <div class="item" v-for="(ele, i) of browserList" :key="ele.id">
-            <!-- <div class="inline-block">{{ele.id}}</div> -->
-            <div class="inline-block">
-              <div class="img-box">
-                <img src="https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg" alt />
-              </div>
+  <div class="page browser-detail-page">
+    <div class="info-list-block">
+      <div class="info-list-container">
+        <div class="info">
+          <div class="inline-block">
+            <div class="img-box">
+              <img src="https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg" alt />
             </div>
-            <div class="inline-block">昵称</div>
-            <div class="browser-action inline-block">浏览动作</div>
-            <div class="inline-block">2020/06/06 22:00:00</div>
           </div>
-          <!-- 无数据时,此元素将被索引到,被给他插入孩纸 -->
-          <div id="nodata" class="m-list-nodata">
-          </div>
-        </MescrollVue>
+          <div class="inline-block">昵称</div>
+        </div>
+        <!-- <div class="flex-item"> -->
+          <MescrollVue
+            :down="mescrollDown"
+            :up="mescrollUp"
+            class="flex-item scroll-cont"
+            @init="mescrollInit"
+          >
+            <div class="item" v-for="(ele, i) of browserList" :key="ele.id">
+              <!-- <div class="inline-block">{{ele.id}}</div> -->
+              <div class="browser-action inline-block">浏览动作</div>
+              <div class="inline-block">2020/06/06 22:00:00</div>
+            </div>
+            <!-- 无数据时,此元素将被索引到,被给他插入孩纸 -->
+            <div id="nodata" class="m-list-nodata"></div>
+          </MescrollVue>
+        <!-- </div> -->
       </div>
     </div>
   </div>
@@ -25,7 +33,7 @@
 
 <script>
 /**
- * 浏览痕迹页
+浏览详情页
  */
 import MescrollVue from "mescroll.js/mescroll";
 
@@ -42,7 +50,7 @@ export default {
         callback: this.upCallback,
         noMoreSize: 1, // 如果列表已无数据,可设置列表的总数量要大于1页的数量才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看
         page: {
-          size: 15
+          size: 25
         },
         empty: {
           // 列表第一页无任何数据时,显示的空提示布局; 需配置warpId才生效;
@@ -62,7 +70,7 @@ export default {
       this.mescroll = mescroll;
     },
     upCallback(page, mescroll) {
-      // console.log("上拉回调");
+      console.log("上拉回调");
       if (page.num === 1) {
         this.browserList = [];
       }
@@ -122,27 +130,41 @@ export default {
 </script>
 
 <style lang="less">
-.browser-page {
-  .browser-block {
+.browser-detail-page {
+  .info-list-block {
     height: 100%;
   }
-  .browser-container {
+  .info-list-container {
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    .info {
+      text-align: left;
+      padding: 10px;
+      .inline-block {
+        vertical-align: middle;
+      }
+      .img-box {
+        width: 50px;
+        height: 50px;
+      }
+    }
+    .flex-item {
+      flex-grow: 1;
+      flex-shrink: 1;
+      overflow: auto;
+      background: greenyellow;
+    }
     .scroll-cont {
       background: pink;
     }
     .item {
       margin: 10px;
-    }
-    .item > .inline-block {
-      vertical-align: middle;
-    }
-    .img-box {
-      width: 50px;
-      height: 50px;
+      display: flex;
+      justify-content: space-between;
     }
     .browser-action {
-      color: #bbb;
+      color: #aaa;
     }
   }
 }
