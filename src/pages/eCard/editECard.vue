@@ -94,6 +94,7 @@
  */
 // import Cropper from "cropperDialogjs";
 import cropperDialog from "@/components/cropperDialog/cropperDialog";
+import axios from 'axios'
 
 export default {
   data() {
@@ -204,7 +205,34 @@ export default {
       } else {
         this.customVideo.pause();
       }
-    }
+    },
+    // 点击保存
+    clickSave() {
+      // axios并发请求准备
+      const iterable = []
+      // 判断文件是否有改变?
+      if(this.eCardInfo.audioUrl && this.eCardInfo.audioUrl.indexOf('data:audio/') !== -1) {
+        const formData = new FormData()
+        formData.append('file', this.audioFile, this.audioFile.name)
+        // 遍历器加入第一个promise,并发送第一波的某个请求
+        iterable.push(apiFile.fileUpload(formData))
+      }
+      if(this.eCardInfo.videoUrl && this.eCardInfo.videoUrl.indexOf('data:video/') !== -1) {
+        const formData = new FormData()
+        formData.append('file', this.videoFile, this.videoFile.name)
+        console.log('视频64:', this.eCardInfo.videoUrl)
+        iterable.push(apiFile.fileUpload(formData))
+      }
+      // axios并发核心api all,spread
+      axios.all(iterable).then(
+        axios.spread((res1, res2) => {
+          this.eCardInfo.audioUrl = res1.data.resultContent.url
+          this.eCardInfo.videoUrl = res2.data.resultContent.url
+          // 发送第二波请求
+          apiECard.eCardUpdate(this.eCardInfo).then(() => {})
+        })
+      );
+    },
   }
 };
 </script>
