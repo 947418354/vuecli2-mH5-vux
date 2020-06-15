@@ -30,7 +30,11 @@ import "cropperjs/dist/cropper.css";
 export default {
   props: {
     visible: {},
-    imgUrl: {}
+    imgUrl: {},
+    opt: {      // 构建cropper实例时的配置参数
+      default: () => ({}),
+      type: Object
+    },
   },
   data() {
     return {
@@ -39,12 +43,10 @@ export default {
   },
   mounted() {
     this.preview = document.getElementById("clip_image");
-    const opt = {
-      aspectRatio: 1,
-      resultObj: null
-    };
+    // const opt = {
+    //   resultObj: null
+    // };
     // const cropper = new Cropper(image, {
-    //   aspectRatio: 16 / 9,
     //   crop(event) {
     //     console.log(event.detail.x);
     //     console.log(event.detail.y);
@@ -56,13 +58,13 @@ export default {
     //   }
     // });
     this.cropper = new Cropper(this.preview, {
-      aspectRatio: opt.aspectRatio || 1,
-      autoCropArea: opt.autoCropArea || 1,
+      aspectRatio: this.opt.aspectRatio || 5 / 4,   // 裁剪区定型,宽高比
+      autoCropArea: this.opt.autoCropArea || 1,
       viewMode: 1,
-      guides: opt.aspectRatio == "Free" ? false : true,
-      cropBoxResizable: opt.aspectRatio == "Free" ? false : true,
-      cropBoxMovable: opt.aspectRatio == "Free" ? false : true,
-      dragCrop: opt.aspectRatio == "Free" ? false : true,
+      guides: this.opt.aspectRatio == "Free" ? false : true,
+      cropBoxResizable: this.opt.aspectRatio == "Free" ? false : true,
+      cropBoxMovable: this.opt.aspectRatio == "Free" ? false : true,
+      dragCrop: this.opt.aspectRatio == "Free" ? false : true,
       background: false,
       checkOrientation: true,
       checkCrossOrigin: true,
@@ -70,9 +72,9 @@ export default {
       zoomOnWheel: false,
       center: false,
       toggleDragModeOnDblclick: false,
-      ready: function() {
+      ready: () => {
         // console.log(self.cropper.rotate(90))
-        if (opt.aspectRatio == "Free") {
+        if (this.opt.aspectRatio == "Free") {
           let cropBox = self.cropper.cropBox;
           cropBox.querySelector("span.cropper-view-box").style.outline = "none";
           self.cropper.disable();

@@ -82,7 +82,12 @@
       <button>录制视频</button>
       <input type="file" accept="video/*" @change="changeVideo($event)" />
     </div>
-    <cropperDialog v-if="isCropperShow" :visible.sync="isCropperShow" :imgUrl="changeUrl" @confirm="cropperDialogConfirm"></cropperDialog>
+    <cropperDialog
+      v-if="isCropperShow"
+      :visible.sync="isCropperShow"
+      :imgUrl="changeUrl"
+      @confirm="cropperDialogConfirm"
+    ></cropperDialog>
   </div>
 </template>
 
@@ -94,13 +99,13 @@
  */
 // import Cropper from "cropperDialogjs";
 import cropperDialog from "@/components/cropperDialog/cropperDialog";
-import axios from 'axios'
+import axios from "axios";
 
 export default {
   data() {
     return {
       eCardInfo: {
-        headerUrl: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg'
+        headerUrl: "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg"
       },
       changeUrl: "",
       audioSrc: "",
@@ -113,7 +118,7 @@ export default {
         callNum: "18912341234",
         microMessageNum: "weixinnum"
       },
-      isCropperShow: false,
+      isCropperShow: false
     };
   },
   components: {
@@ -131,15 +136,17 @@ export default {
   methods: {
     changeHeader(e) {
       let file = e.target.files[0];
-      var reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = res => {
-        this.changeUrl = res.currentTarget.result;
-        this.isCropperShow = true
-      };
+      if (file instanceof File) {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = res => {
+          this.changeUrl = res.currentTarget.result;
+          this.isCropperShow = true;
+        };
+      }
     },
     cropperDialogConfirm(img64) {
-      this.eCardInfo.headerUrl = img64
+      this.eCardInfo.headerUrl = img64;
     },
     changeaudio(e) {
       let file = e.target.files[0];
@@ -160,10 +167,10 @@ export default {
         // console.log("执行长按操作");
         this.$vux.confirm.show({
           // 组件除show外的属性
-          content: '是否删除此条录音?',
+          content: "是否删除此条录音?",
           onConfirm() {
             // console.log('确认框确认事件', _this)
-            _this.eCardInfo.audioUrl = ''
+            _this.eCardInfo.audioUrl = "";
           }
         });
       }, 1000);
@@ -209,30 +216,36 @@ export default {
     // 点击保存
     clickSave() {
       // axios并发请求准备
-      const iterable = []
+      const iterable = [];
       // 判断文件是否有改变?
-      if(this.eCardInfo.audioUrl && this.eCardInfo.audioUrl.indexOf('data:audio/') !== -1) {
-        const formData = new FormData()
-        formData.append('file', this.audioFile, this.audioFile.name)
+      if (
+        this.eCardInfo.audioUrl &&
+        this.eCardInfo.audioUrl.indexOf("data:audio/") !== -1
+      ) {
+        const formData = new FormData();
+        formData.append("file", this.audioFile, this.audioFile.name);
         // 遍历器加入第一个promise,并发送第一波的某个请求
-        iterable.push(apiFile.fileUpload(formData))
+        iterable.push(apiFile.fileUpload(formData));
       }
-      if(this.eCardInfo.videoUrl && this.eCardInfo.videoUrl.indexOf('data:video/') !== -1) {
-        const formData = new FormData()
-        formData.append('file', this.videoFile, this.videoFile.name)
-        console.log('视频64:', this.eCardInfo.videoUrl)
-        iterable.push(apiFile.fileUpload(formData))
+      if (
+        this.eCardInfo.videoUrl &&
+        this.eCardInfo.videoUrl.indexOf("data:video/") !== -1
+      ) {
+        const formData = new FormData();
+        formData.append("file", this.videoFile, this.videoFile.name);
+        console.log("视频64:", this.eCardInfo.videoUrl);
+        iterable.push(apiFile.fileUpload(formData));
       }
       // axios并发核心api all,spread
       axios.all(iterable).then(
         axios.spread((res1, res2) => {
-          this.eCardInfo.audioUrl = res1.data.resultContent.url
-          this.eCardInfo.videoUrl = res2.data.resultContent.url
+          this.eCardInfo.audioUrl = res1.data.resultContent.url;
+          this.eCardInfo.videoUrl = res2.data.resultContent.url;
           // 发送第二波请求
-          apiECard.eCardUpdate(this.eCardInfo).then(() => {})
+          apiECard.eCardUpdate(this.eCardInfo).then(() => {});
         })
       );
-    },
+    }
   }
 };
 </script>
