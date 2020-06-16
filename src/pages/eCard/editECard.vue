@@ -60,7 +60,7 @@
               class="opacity0-file-input"
               type="file"
               accept="audio/*"
-              @change="changeaudio($event)"
+              @change="changeAudio($event)"
             />
             <button>录制音频</button>
           </div>
@@ -148,15 +148,51 @@ export default {
     cropperDialogConfirm(img64) {
       this.eCardInfo.headerUrl = img64;
     },
-    changeaudio(e) {
+    changeAudio(e) {
+      // 'http://music.163.com/song/media/outer/url?id=562598065.mp3'
+      // 选取文件时的需求限制,根据业务需求配置
+      const xuqiuConfig = {
+        isTimeLimit: true, // 选择的音频是否限制时长?
+        timeLimit: 60 // 时间限制多少? 单位秒.isTimeLimit为true时有意义
+      };
       let file = e.target.files[0];
       if (file instanceof File) {
-        var reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = res => {
-          this.audioSrc = res.currentTarget.result;
-        };
+        // console.log("音频文件变化选择的音频文件", file);
+        if (xuqiuConfig.isTimeLimit) {
+          var url = URL.createObjectURL(file);
+          var audioElement = new Audio(url);
+          var duration;
+          audioElement.addEventListener("loadedmetadata", _event => {
+            duration = audioElement.duration;
+            console.log(duration + "s");
+            if (duration > xuqiuConfig.timeLimit) {
+              this.$vux.alert.show({
+                title: "选择文件失败!",
+                content: "音频文件限制时长60s",
+                onShow() {
+                  // console.log("Plugin: I'm showing");
+                },
+                onHide() {
+                  // console.log("Plugin: I'm hiding");
+                }
+              });
+            } else {
+              this.tempSaveAudio(file);
+            }
+          });
+        } else {
+          this.tempSaveAudio(file);
+        }
       }
+    },
+    // 选择的符合要求的音频进行暂存,并渲染到页面
+    tempSaveAudio(file) {
+      this.audioFile = file;
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = res => {
+        this.eCardInfo.audioUrl = res.currentTarget.result;
+      };
     },
     // 自定义音频触摸开始事件, 实现长按删除确认框
     touchstart() {
@@ -187,14 +223,48 @@ export default {
       return false;
     },
     changeVideo(e) {
+      const xuqiuConfig = {
+        isTimeLimit: true, // 选择的音频是否限制时长?
+        timeLimit: 60 // 时间限制多少? 单位秒.isTimeLimit为true时有意义
+      };
       let file = e.target.files[0];
       if (file instanceof File) {
-        var reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = res => {
-          this.videoSrc = res.currentTarget.result;
-        };
+        if (xuqiuConfig.isTimeLimit) {
+          var url = URL.createObjectURL(file);
+          var videoElement = document.createElement("video");
+          videoElement.src = url;
+          var duration;
+          videoElement.addEventListener("loadedmetadata", _event => {
+            duration = videoElement.duration;
+            console.log(duration + "s");
+            if (duration > xuqiuConfig.timeLimit) {
+              this.$vux.alert.show({
+                title: "选择文件失败!",
+                content: "视频文件限制时长60s",
+                onShow() {
+                  // console.log("Plugin: I'm showing");
+                },
+                onHide() {
+                  // console.log("Plugin: I'm hiding");
+                }
+              });
+            } else {
+              this.tempSaveVideo(file);
+            }
+          });
+        } else {
+          this.tempSaveVideo(file);
+        }
       }
+    },
+    // 选择的符合要求的视频频进行暂存,并渲染到页面
+    tempSaveVideo(file) {
+      this.videoFile = file;
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = res => {
+        this.eCardInfo.videoUrl = res.currentTarget.result;
+      };
     },
     clickAudioPlay() {
       const audio = this.$refs.audio;
