@@ -43,6 +43,13 @@ export default new Router({
       },
     },
     {
+      path: '/qrcode',
+      name: 'qrcode',
+      components: {
+        default: () => import(/* webpackChunkName: "qrcode" */'@/pages/eCard/qrcode')
+      },
+    },
+    {
       path: '/microShop',
       name: 'microShop',
       components: {
