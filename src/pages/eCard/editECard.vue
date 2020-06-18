@@ -94,11 +94,12 @@
 <script>
 /* eslint-disable */
 /**
- * 个人电子名片页
- * 拍照头像， 录音说明， 视频介绍。
+ * 修改电子名片页
+ * 拍照头像， 录音说明， 视频介绍。图片压缩
  */
 // import Cropper from "cropperDialogjs";
 import cropperDialog from "@/components/cropperDialog/cropperDialog";
+import lrz from "lrz";
 import axios from "axios";
 
 export default {
@@ -284,9 +285,34 @@ export default {
       }
     },
     // 点击保存
-    clickSave() {
+    clickSave: async function() {
       // axios并发请求准备
       const iterable = [];
+      // 如果更改了图片,图片压缩上传
+      if (this.eCardInfo.imgUrl.indexOf("http") !== 0) {
+        // 压缩并上传
+        await lrz(this.eCardInfo.imgUrl)
+          .then(rst => {
+            // 处理成功会执行
+            iterable.push(this.uploadImageLrz(rst.base64));
+          })
+          .catch(err => {
+            console.log(err);
+            // 处理失败会执行
+            this.$vux.alert.show({
+              title: "温馨提示",
+              content: "网络异常，稍后重试"
+            });
+          });
+        /*const formData = new FormData();
+        formData.append("file", this.imgFile, this.imgFile.name);
+        formData.append("uploadType", 1);
+        iterable.push(
+          apiFile.fileUpload(formData).then(res => {
+            this.eCardInfo.imgUrl = res.data.resultContent.url;
+          })
+        );*/
+      }
       // 判断文件是否有改变?
       if (
         this.eCardInfo.audioUrl &&
@@ -315,6 +341,28 @@ export default {
           apiECard.eCardUpdate(this.eCardInfo).then(() => {});
         })
       );
+    },
+    // 发起上传压缩图片64码
+    uploadImageLrz(files) {
+      return apiAccount
+        .uploadImageByBase64({
+          imageData: files.replace(/^data:image\/(jpeg|jpg|png);base64,/, "")
+        })
+        .then(res => {
+          if (res.data) {
+            const { url, fileName } = res.data.resultContent;
+            this.eCardInfo.imgUrl = url;
+            // return res.data.resultContent;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          this.$vux.alert.show({
+            title: "温馨提示",
+            content: "网络异常,稍后重试"
+          });
+          return false;
+        });
     }
   }
 };
