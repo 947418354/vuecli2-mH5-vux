@@ -21,8 +21,8 @@
           </div>
         </div>
         <div>电话: 18912341234</div>
-        <div>微信: {{microMessageNum}}</div>
-        <div>地址: {{address}}</div>
+        <div>微信: {{eCardInfo.microMessageNum}}</div>
+        <div>地址: {{eCardInfo.address}}</div>
       </div>
     </div>
     <!-- 音频块 -->
@@ -52,6 +52,7 @@
         <div class="custom-video-controls">
           <div>
             <button @click.stop="clickPlay">播放/暂停</button>
+            <button @click.stop="clickFullScreen">全屏与否</button>
           </div>
         </div>
       </div>
@@ -73,25 +74,41 @@ export default {
   data() {
     return {
       eCardInfo: {
-        orgName: '某某城某某部',  // 机构名称
+        orgName: "某某城某某部", // 机构名称
+        microMessageNum: ""
       },
-      headerSrc: unHeaderImg,
+      headerSrc: "",
       audioSrc: "",
       videoSrc: "",
       customVideo: "",
-      readCurrentTimeInterval: '',
-      videoCurrentTime: '',   // 视频当前时间,双精度浮点型 单位秒
-      cdnVideoSrc: ""
+      readCurrentTimeInterval: "",
+      videoCurrentTime: "", // 视频当前时间,双精度浮点型 单位秒
+      cdnVideoSrc: "https://v-cdn.zjol.com.cn/280443.mp4",
+      fullScreenEnabled: ""
+      /**
+       * https://v-cdn.zjol.com.cn/280443.mp4
+https://v-cdn.zjol.com.cn/276982.mp4
+https://v-cdn.zjol.com.cn/276984.mp4
+https://v-cdn.zjol.com.cn/276985.mp4
+       */
     };
   },
   mounted() {
     this.customVideo = document.getElementById("customVideo");
+    this.fullScreenEnabled = !!(
+      document.fullscreenEnabled ||
+      document.mozFullScreenEnabled ||
+      document.msFullscreenEnabled ||
+      document.webkitSupportsFullscreen ||
+      document.webkitFullscreenEnabled ||
+      document.createElement("video").webkitRequestFullScreen
+    );
     this.readCurrentTimeInterval = setInterval(() => {
       this.videoCurrentTime = this.customVideo.currentTime;
     }, 1000);
   },
   beforeDestroy() {
-    clearInterval(this.readCurrentTimeInterval)
+    clearInterval(this.readCurrentTimeInterval);
   },
   methods: {
     changeHeader(e) {
@@ -136,6 +153,22 @@ export default {
         this.customVideo.play();
       } else {
         this.customVideo.pause();
+      }
+    },
+    clickFullScreen() {
+      if (this.fullScreenEnabled) {
+        const videoContainer = this.customVideo
+        if (videoContainer.requestFullscreen)
+          videoContainer.requestFullscreen();
+        else if (videoContainer.mozRequestFullScreen)
+          videoContainer.mozRequestFullScreen();
+        else if (videoContainer.webkitRequestFullScreen)
+          videoContainer.webkitRequestFullScreen();
+        else if (videoContainer.msRequestFullscreen)
+          videoContainer.msRequestFullscreen();
+        // setFullscreenData(true);
+      } else {
+        alert("此浏览器不支持全屏");
       }
     }
   }

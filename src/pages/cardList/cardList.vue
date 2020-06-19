@@ -1,5 +1,19 @@
 <template>
   <div class="page card-list-page">
+    <!-- 自定义头标题,样式见根组件全局样式 -->
+    <div class="header-title-height">
+      <div class="zh-header-container">
+          <div class="left-item">
+            <div style="position: relative;">
+              <x-icon class="x-icon-svg" type="ios-arrow-thin-left" size="40" @click="goBack"></x-icon>
+            </div>
+          </div>
+          <div class="title">页标题</div>
+          <div class="right-item">
+            <button>编辑</button>
+          </div>
+      </div>
+    </div>
     <div
       class="card-with-img"
       v-for="(item, i) of browserList"
@@ -31,7 +45,13 @@
  * 卡片列表页
  * 枚举部分常用卡片列表卡片布局
  */
-export default {};
+export default {
+  methods: {
+    goBack() {
+      history.back();
+    },
+  }
+};
 </script>
 
 <style lang="less">

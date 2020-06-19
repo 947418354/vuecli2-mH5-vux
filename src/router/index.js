@@ -12,6 +12,13 @@ export default new Router({
       component: postcss
     },
     {
+      path: '/eCard',
+      name: 'eCard',
+      components: {
+        default: () => import(/* webpackChunkName: "eCard" */'@/pages/eCard/eCard')
+      },
+    },
+    {
       path: '/editECard',
       name: 'editECard',
       components: {
