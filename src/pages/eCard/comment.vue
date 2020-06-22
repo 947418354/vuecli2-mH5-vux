@@ -1,29 +1,64 @@
 <template>
+  <!-- eslint-disable -->
   <div class="page comment-list-page">
     <div>
       <div class="comment-list-container">
         <MescrollVue :down="mescrollDown" :up="mescrollUp" class="scroll-cont" @init="mescrollInit">
-          <div class="item" v-for="(item, i) of browserList" :key="item.id">
+          <!-- 头像单独算一块布局 -->
+          <div class="item card-header-duli" v-for="(item, i) of browserList" :key="i">
+            <div>
+              <div class="img-box border-radius">
+                <img :src="item.headImgUrl || defaultImg" alt />
+              </div>
+            </div>
             <div>
               <div class="info-container">
                 <div>
-                  <div class="img-box"><img :src="item.headerUrl" alt=""></div>
+                  <div class="inline-block">{{item.nickName || '静态昵称'}}</div>
+                  <div class="date inline-block">{{formatterDateTime(item.createTime)}}</div>
+                </div>
+              </div>
+              <div class="comment-divtext">{{item.comment}}</div>
+              <div>
+                <span class="evalute-span">评分:</span>
+                <Rater v-model="item.score" disabled :font-size="15"></Rater>
+              </div>
+            </div>
+            <div class="switch-item">
+              <XSwitch
+                class="x-switch inline-block"
+                v-model="item.open"
+                title
+                @on-change="changeSwitch(item)"
+              ></XSwitch>
+              <div class="x-switch-tip inline-block">{{formatterIsShow(item.open)}}</div>
+            </div>
+          </div>
+          <!-- 头像不单独算一块布局 -->
+          <!-- <div class="item" v-for="(item, i) of browserList" :key="i">
+            <div>
+              <div class="info-container">
+                <div>
+                  <div class="img-box border-radius">
+                    <img :src="item.headImgUrl" alt />
+                  </div>
                 </div>
                 <div>
-                  <div>昵称</div>
-                  <div>{{item.dateTime}}</div>
+                  <div class="inline-block">{{item.nickName || '静态昵称'}}</div>
+                  <div class="date inline-block">{{formatterDateTime(item.createTime)}}</div>
                 </div>
               </div>
               <div>
-                <span>评分: </span><Rater v-model="item.score" disabled></Rater>
+                <span class="evalute-span">评分:</span>
+                <Rater v-model="item.score" disabled></Rater>
               </div>
-              <div class="comment-divtext">评论文字很长的评论评论文字很长的评论评论文字很长的评论评论文字很长的评论评论文字很长的评论评论文字很长的评论评论文字很长的评论</div>
+              <div class="comment-divtext">{{item.comment}}</div>
             </div>
             <div>
-              <XSwitch v-model="item.isShow" title=""></XSwitch>
-              <div>{{formatterIsShow(item.isShow)}}</div>
+              <XSwitch class="x-switch inline-block" v-model="item.open" title @on-change="changeSwitch(item)"></XSwitch>
+              <div class="x-switch-tip inline-block">{{formatterIsShow(item.open)}}</div>
             </div>
-          </div>
+          </div>-->
           <!-- 无数据时,此元素将被索引到,被给他插入孩纸 -->
           <div id="nodata" class="m-list-nodata"></div>
         </MescrollVue>
@@ -33,11 +68,15 @@
 </template>
 
 <script>
+/* eslint-disable */
 /**
 评价列表页
  */
 import MescrollVue from "mescroll.js/mescroll";
-import { XSwitch, Rater  } from 'vux'
+import { XSwitch, Rater } from "vux";
+import apiECard from "@/api/eCard";
+import { isNumber } from "lodash";
+import { formatDateTime } from "@/utils/date";
 
 export default {
   data() {
@@ -61,13 +100,14 @@ export default {
           tip: "暂无相关数据~" // 提示
         },
         htmlNodata: '<p class="upwarp-nodata">-- 没有更多数据了 --</p>'
-      }
+      },
+      defaultImg: "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg"
     };
   },
   components: {
     MescrollVue,
     XSwitch,
-    Rater 
+    Rater
   },
   methods: {
     mescrollInit(mescroll) {
@@ -78,7 +118,7 @@ export default {
       if (page.num === 1) {
         this.browserList = [];
       }
-      setTimeout(() => {
+      /*setTimeout(() => {
         const behandList = [];
         for (let i = 0; i < page.size; i++) {
           behandList.push({
@@ -108,9 +148,13 @@ export default {
           }
         });
         // }
-      }, 2000);
-      /*request
-        .queryMsProduct()
+      }, 2000);*/
+      const payload = {
+        Page: page.num,
+        pageSize: page.size
+      };
+      apiECard
+        .eCardComment(payload)
         .then(res => {
           if (res.data.resultFlag) {
             const { rows, total } = res.data.resultContent;
@@ -130,10 +174,20 @@ export default {
         })
         .catch(err => {
           console.log("发生错误：", err);
-        });*/
+        });
+    },
+    changeSwitch(item) {
+      // console.log(emit)
+      apiECard.evaluateSwitch({
+        evaluateId: item.evaluateId,
+        open: item.status
+      });
     },
     formatterIsShow(isShow) {
-      return isShow ? '公开' : '未公开'
+      return isShow ? "公开" : "未公开";
+    },
+    formatterDateTime(timeStamp) {
+      return formatDateTime(timeStamp).slice(0, -3);
     }
   }
 };
@@ -146,23 +200,51 @@ export default {
       display: flex;
       justify-content: space-between;
       margin: 10px;
-      background: #eee;
       border-radius: 5px;
       padding: 10px;
+      background: #eee;
+    }
+    .img-box {
+      width: 50px;
+      height: 50px;
+      margin-right: 10px;
     }
     .info-container {
       display: flex;
-      .img-box {
-        width: 50px;
-        height: 50px;
-        margin-right: 10px;
-      }
+    }
+    .date {
+      font-size: 12px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: rgba(178, 180, 180, 1);
+      line-height: 17px;
+    }
+    .evalute-span {
+      font-size: 12px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: rgba(155, 155, 155, 1);
+      line-height: 17px;
     }
     .comment-divtext {
       text-align: left;
+      font-size: 16px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: rgba(74, 74, 74, 1);
+      line-height: 22px;
     }
     .vux-x-switch {
       transform: scale(0.8);
+      vertical-align: middle;
+    }
+    .x-switch-tip {
+      vertical-align: middle;
+    }
+  }
+  .card-header-duli {
+    .switch-item {
+      width: 110px;
     }
   }
 }

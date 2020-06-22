@@ -4,7 +4,6 @@
       <div class="browser-container">
         <MescrollVue :down="mescrollDown" :up="mescrollUp" class="scroll-cont" @init="mescrollInit">
           <div class="item" v-for="(ele, i) of browserList" :key="ele.id">
-            <!-- <div class="inline-block">{{ele.id}}</div> -->
             <div class="inline-block">
               <div class="img-box">
                 <img src="https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg" alt />
