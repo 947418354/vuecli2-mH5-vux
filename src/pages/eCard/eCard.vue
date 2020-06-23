@@ -47,8 +47,10 @@
     <div>
       <video class="video" :src="videoSrc" controls></video>
       <!-- 自定义视频控件 -->
-      <div style="position:relative;">
-        <video id="customVideo" class="video" :src="cdnVideoSrc"></video>
+      <div id="video-container" style="position:relative;">
+        <div>
+          <video id="customVideo" class="video" :src="cdnVideoSrc"></video>
+        </div>
         <div class="custom-video-controls">
           <div>
             <button @click.stop="clickPlay">播放/暂停</button>
@@ -81,6 +83,7 @@ export default {
       audioSrc: "",
       videoSrc: "",
       customVideo: "",
+      videoContainerElement: null,  // 自定义视频控件外部容器
       readCurrentTimeInterval: "",
       videoCurrentTime: "", // 视频当前时间,双精度浮点型 单位秒
       cdnVideoSrc: "https://v-cdn.zjol.com.cn/280443.mp4",
@@ -95,6 +98,7 @@ https://v-cdn.zjol.com.cn/276985.mp4
   },
   mounted() {
     this.customVideo = document.getElementById("customVideo");
+    this.videoContainerElement = document.getElementById('video-container')
     this.fullScreenEnabled = !!(
       document.fullscreenEnabled ||
       document.mozFullScreenEnabled ||
@@ -157,7 +161,7 @@ https://v-cdn.zjol.com.cn/276985.mp4
     },
     clickFullScreen() {
       if (this.fullScreenEnabled) {
-        const videoContainer = this.customVideo
+        const videoContainer = this.videoContainerElement
         if (videoContainer.requestFullscreen)
           videoContainer.requestFullscreen();
         else if (videoContainer.mozRequestFullScreen)

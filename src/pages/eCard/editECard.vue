@@ -93,12 +93,12 @@
 
 <script>
 /* eslint-disable */
-/**
+/**exitFullscreen()
  * 修改电子名片页
  * 拍照头像， 录音说明， 视频介绍。图片压缩
  */
 // import Cropper from "cropperDialogjs";
-import cropperDialog from "@/components/cropperDialog/cropperDialog";
+import cropperDialog from "@/components/dialog/cropperDialog/cropperDialog";
 import lrz from "lrz";
 import axios from "axios";
 

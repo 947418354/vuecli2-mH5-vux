@@ -74,9 +74,9 @@
  */
 import MescrollVue from "mescroll.js/mescroll";
 import { XSwitch, Rater } from "vux";
-import apiECard from "@/api/eCard";
 import { isNumber } from "lodash";
 import { formatDateTime } from "@/utils/date";
+// import apiECard from "@/api/eCard";
 
 export default {
   data() {
@@ -118,7 +118,7 @@ export default {
       if (page.num === 1) {
         this.browserList = [];
       }
-      /*setTimeout(() => {
+      setTimeout(() => {
         const behandList = [];
         for (let i = 0; i < page.size; i++) {
           behandList.push({
@@ -148,8 +148,8 @@ export default {
           }
         });
         // }
-      }, 2000);*/
-      const payload = {
+      }, 2000);
+      /*const payload = {
         Page: page.num,
         pageSize: page.size
       };
@@ -174,14 +174,13 @@ export default {
         })
         .catch(err => {
           console.log("发生错误：", err);
-        });
+        });*/
     },
     changeSwitch(item) {
-      // console.log(emit)
-      apiECard.evaluateSwitch({
-        evaluateId: item.evaluateId,
-        open: item.status
-      });
+      // apiECard.evaluateSwitch({
+      //   evaluateId: item.evaluateId,
+      //   open: item.status
+      // });
     },
     formatterIsShow(isShow) {
       return isShow ? "公开" : "未公开";

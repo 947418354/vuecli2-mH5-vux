@@ -5,7 +5,7 @@
   "author": "",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "webpack-dev-server --inline --progress --host 192.168.0.102 --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js"
   },
@@ -54,6 +54,7 @@
     "style-loader": "^1.2.1",
     "uglifyjs-webpack-plugin": "^1.1.1",
     "url-loader": "^0.5.8",
+    "vconsole": "^3.3.4",
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.5.2",
