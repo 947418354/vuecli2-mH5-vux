@@ -45,9 +45,13 @@
       </div>
     </div>
     <div>
-      <video class="video" :src="videoSrc" controls></video>
+      <video class="video" :src="cdnVideoSrc" controls></video>
       <!-- 自定义视频控件 -->
-      <div id="video-container" style="position:relative;">
+      <div
+        id="video-container"
+        @webkitfullscreenchange="fullscreenchange"
+        style="position:relative;"
+      >
         <div>
           <video id="customVideo" class="video" :src="cdnVideoSrc"></video>
         </div>
@@ -83,11 +87,12 @@ export default {
       audioSrc: "",
       videoSrc: "",
       customVideo: "",
-      videoContainerElement: null,  // 自定义视频控件外部容器
+      videoContainerElement: null, // 自定义视频控件外部容器
       readCurrentTimeInterval: "",
       videoCurrentTime: "", // 视频当前时间,双精度浮点型 单位秒
-      cdnVideoSrc: "https://v-cdn.zjol.com.cn/280443.mp4",
-      fullScreenEnabled: ""
+      cdnVideoSrc: "https://v-cdn.zjol.com.cn/276982.mp4",
+      fullScreenEnabled: "",
+      isFullScreen: false // 用于指示自定义视频是否处于全屏
       /**
        * https://v-cdn.zjol.com.cn/280443.mp4
 https://v-cdn.zjol.com.cn/276982.mp4
@@ -98,7 +103,21 @@ https://v-cdn.zjol.com.cn/276985.mp4
   },
   mounted() {
     this.customVideo = document.getElementById("customVideo");
-    this.videoContainerElement = document.getElementById('video-container')
+    this.videoContainerElement = document.getElementById("video-container");
+    // 元素全屏change事件 存在兼容性问题,需加浏览器前缀
+    // this.videoContainerElement.addEventListener("webkitfullscreenchange", event => {
+    //   console.log('监听到事件', event)
+    //   // document.fullscreenElement will point to the element that
+    //   // is in fullscreen mode if there is one. If not, the value
+    //   // of the property is null.
+    //   if (document.fullscreenElement) {
+    //     console.log(
+    //       `Element: ${document.fullscreenElement.id} entered fullscreen mode.`
+    //     );
+    //   } else {
+    //     console.log("Leaving full-screen mode.");
+    //   }
+    // });
     this.fullScreenEnabled = !!(
       document.fullscreenEnabled ||
       document.mozFullScreenEnabled ||
@@ -133,6 +152,10 @@ https://v-cdn.zjol.com.cn/276985.mp4
         };
       }
     },
+    clickAudioPlay() {
+      const audio = this.$refs.audio;
+      audio.play();
+    },
     changeVideo(e) {
       let file = e.target.files[0];
       var reader = new FileReader();
@@ -141,10 +164,6 @@ https://v-cdn.zjol.com.cn/276985.mp4
         console.log(res);
         this.videoSrc = res.currentTarget.result;
       };
-    },
-    clickAudioPlay() {
-      const audio = this.$refs.audio;
-      audio.play();
     },
     // 自定义视频控件点击播放/暂停
     clickPlay() {
@@ -161,19 +180,35 @@ https://v-cdn.zjol.com.cn/276985.mp4
     },
     clickFullScreen() {
       if (this.fullScreenEnabled) {
-        const videoContainer = this.videoContainerElement
-        if (videoContainer.requestFullscreen)
-          videoContainer.requestFullscreen();
-        else if (videoContainer.mozRequestFullScreen)
-          videoContainer.mozRequestFullScreen();
-        else if (videoContainer.webkitRequestFullScreen)
-          videoContainer.webkitRequestFullScreen();
-        else if (videoContainer.msRequestFullscreen)
-          videoContainer.msRequestFullscreen();
-        // setFullscreenData(true);
+        if (this.isFullScreen) {
+          // 退出全屏api 在pc谷歌端 只有document支持
+          const videoContainer = this.videoContainerElement;
+          if (videoContainer.exitFullscreen) videoContainer.exitFullscreen();
+          else if (videoContainer.mozExitFullScreen)
+            videoContainer.mozExitFullScreen();
+          else if (document.webkitExitFullscreen)
+            document.webkitExitFullscreen();
+          else if (videoContainer.msExitFullscreen)
+            videoContainer.msExitFullscreen();
+          this.isFullScreen = false;
+        } else {
+          const videoContainer = this.videoContainerElement;
+          if (videoContainer.requestFullscreen)
+            videoContainer.requestFullscreen();
+          else if (videoContainer.mozRequestFullScreen)
+            videoContainer.mozRequestFullScreen();
+          else if (videoContainer.webkitRequestFullScreen)
+            videoContainer.webkitRequestFullScreen();
+          else if (videoContainer.msRequestFullscreen)
+            videoContainer.msRequestFullscreen();
+          this.isFullScreen = true;
+        }
       } else {
         alert("此浏览器不支持全屏");
       }
+    },
+    fullscreenchange(e) {
+      console.log(e);
     }
   }
 };
@@ -202,6 +237,8 @@ https://v-cdn.zjol.com.cn/276985.mp4
   }
   .video {
     width: 100%;
+    height: 66vw;
+    background: yellowgreen;
   }
   .custom-video-controls {
     position: absolute;
