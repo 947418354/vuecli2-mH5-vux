@@ -90,5 +90,19 @@ export default {
     width: 25%;
     text-align: right;
   }
+
+  /*
+  打包样式
+  */
+  // 样式将图片打包成base64
+  .share-icon {
+    display: inline-block;
+    margin-bottom: -8px;
+    width: 30px;
+    height: 30px;
+    background: url("~assets/img/common/icon-share.png") no-repeat scroll center;
+    background-size: 20px 20px;
+    font-size: 0;
+  }
 }
 </style>

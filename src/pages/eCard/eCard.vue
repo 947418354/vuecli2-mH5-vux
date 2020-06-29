@@ -3,7 +3,7 @@
     <div class="block">
       <div class="traditional-card-container">
         <div style="display: flex; justify-content: between;">
-          <div style="width: 30%;">
+          <div class="header-item">
             <div style="position: relative; width: 50px; height: 50px;">
               <input
                 type="file"
@@ -15,14 +15,48 @@
             </div>
           </div>
           <div>
-            <div>张三</div>
-            <div>某某经理</div>
+            <!-- 姓名职位同行 -->
+            <div class="name-container">
+              <div class="name-div">{{eCardInfo.userName}}</div>
+              <div class="post-div">{{eCardInfo.postName}}</div>
+            </div>
             <div>{{eCardInfo.orgName}}</div>
           </div>
         </div>
-        <div>电话: 18912341234</div>
-        <div>微信: {{eCardInfo.microMessageNum}}</div>
-        <div>地址: {{eCardInfo.address}}</div>
+        <!-- 分割线 -->
+        <div style="border-top: 1px dashed #fff;margin:18px 0;"></div>
+        <!-- 附属信息 -->
+        <div class="addition-item">电话: 18912341234</div>
+        <div class="addition-item">微信: {{eCardInfo.microMessageNum}}</div>
+        <div class="addition-item">地址: {{eCardInfo.address}}</div>
+      </div>
+    </div>
+    <!-- 浏览 点赞 评分块 -->
+    <div>
+      <div class="browser-container">
+        <div class="browser-item">
+          <div class="img-box" style="width:14px;">
+            <img src="@/assets/img/eCard/browserIcon.png" alt />
+          </div>
+          浏览 {{eCardInfo.browseNo}}人
+        </div>
+        <div class="prise-item">
+          <div class="img-box" style="width:14px;">
+            <img src="@/assets/img/eCard/priseIcon.png" alt />
+          </div>
+          靠谱 {{eCardInfo.praiseNo}}
+        </div>
+        <div class="star-box">
+          <span style="vertical-align: middle;">评分:</span>
+          <Rater
+            :value="Number(eCardInfo.avgScore)"
+            disabled
+            :font-size="16"
+            style="vertical-align: middle;"
+          ></Rater>
+          <!-- <div>☆☆☆☆☆</div>
+          <div class="real-star">★★★★★</div>-->
+        </div>
       </div>
     </div>
     <!-- 音频块 -->
@@ -32,8 +66,8 @@
           <img :src="headerSrc" alt />
         </div>
         <div class="audio-box">
-          <div @click="clickAudioPlay">覆盖audio</div>
-          <audio ref="audio" class="audio" :src="audioSrc" controls autoplay></audio>
+          <div @click="clickAudioPlay">{{audioDuration}}"</div>
+          <audio ref="audio" class="audio" :src="audioUrl" controls autoplay></audio>
         </div>
       </div>
     </div>
@@ -84,7 +118,8 @@ export default {
         microMessageNum: ""
       },
       headerSrc: "",
-      audioSrc: "",
+      audioUrl: "",
+      audioDuration: 0, // 音频时长
       videoSrc: "",
       customVideo: "",
       videoContainerElement: null, // 自定义视频控件外部容器
@@ -148,7 +183,7 @@ https://v-cdn.zjol.com.cn/276985.mp4
         var reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = res => {
-          this.audioSrc = res.currentTarget.result;
+          this.audioUrl = res.currentTarget.result;
         };
       }
     },
@@ -218,7 +253,69 @@ https://v-cdn.zjol.com.cn/276985.mp4
 .p-e-card {
   .traditional-card-container {
     padding: 10px;
+    color: #fff;
     border: 1px solid #000;
+    background: linear-gradient(
+      315deg,
+      rgba(65, 198, 247, 1) 0%,
+      rgba(31, 150, 235, 1) 100%
+    );
+    border-radius: 14px;
+    .header-item {
+      .img-box {
+        width: 50px;
+        height: 50px;
+      }
+    }
+    .name-container {
+      display: flex;
+      align-items: center;
+    }
+    .name-div {
+      font-size: 20px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 1);
+      line-height: 28px;
+    }
+    .post-div {
+      padding-left: 10px;
+      font-size: 14px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 1);
+      line-height: 20px;
+    }
+    .addition-item + .addition-item {
+      margin-top: 10px;
+    }
+  }
+
+  .browser-container {
+    display: flex;
+    font-size: 11px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: rgba(155, 155, 155, 1);
+    line-height: 16px;
+    .browser-item {
+      width: 30%;
+    }
+    .prise-item {
+      width: 30%;
+    }
+    .star-box {
+      width: 40%;
+      position: relative;
+    }
+
+    .real-star {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 50%;
+      overflow-x: hidden;
+    }
   }
 
   .audio-container {
@@ -233,6 +330,27 @@ https://v-cdn.zjol.com.cn/276985.mp4
     }
     .audio-box {
       display: inline-block;
+      display: inline-block;
+      width: 167px;
+      height: 40px;
+      background: rgba(31, 149, 235, 1);
+      font-size: 14px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 1);
+      line-height: 20px;
+      &::before {
+        display: block;
+        content: "";
+        width: 0;
+        height: 0;
+        border: 5px solid transparent;
+        border-right: 5px solid rgba(31, 149, 235, 1);
+        position: absolute;
+        left: -10px;
+        top: 50%;
+        transform: translate(0, -50%);
+      }
     }
   }
   .video {
