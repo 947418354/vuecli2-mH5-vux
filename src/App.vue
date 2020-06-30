@@ -47,6 +47,17 @@ export default {
   height: 100%;
 }
 
+/**按钮 */
+button[type="text"] {
+  background: transparent;
+  border: 0;
+  font-size: 14px;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: rgba(31, 149, 235, 1);
+  line-height: 20px;
+}
+
 /**头标题 */
 .header-title-height {
   height: 64px;
@@ -100,7 +111,7 @@ export default {
     margin-bottom: -8px;
     width: 30px;
     height: 30px;
-    background: url("~assets/img/common/icon-share.png") no-repeat scroll center;
+    // background: url("~assets/img/common/icon-share.png") no-repeat scroll center;
     background-size: 20px 20px;
     font-size: 0;
   }

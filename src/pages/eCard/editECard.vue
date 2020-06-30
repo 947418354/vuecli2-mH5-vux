@@ -67,8 +67,62 @@
         </div>
       </div>
     </div>
-
+    <!-- 形象照片区 -->
+    <!-- input变形块 -->
+    <div>
+      <div class="input-mutate-container">
+        <div class="input-box-item">
+          <x-icon
+            type="ios-plus-empty"
+            size="30"
+            style="position: relative;top: 50%;transform: translateY(-50%);"
+          ></x-icon>
+          <input class="file-input" type="file" accept="image/*" @change="changeHeader($event)" />
+        </div>
+        <div class="tip-item" style="padding-left:13px;">
+          <div>
+            支持拍摄/上传图片
+            <br />图片格式：比例3:2
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="xingxiang-img-container">
+        <div class="img-container">
+          <div class="img-box">
+            <img id="header-img" :src="eCardInfo.imgUrl || headerSrc" alt @click="onClickImg" />
+          </div>
+          <!-- <input
+            class="opacity0-file-input"
+            type="file"
+            accept="image/*"
+            @change="changeHeader($event)"
+          />-->
+        </div>
+      </div>
+    </div>
     <video class="video" :src="videoSrc" controls></video>
+    <!-- 视频区 -->
+    <!-- input变形块 -->
+    <div v-show="!eCardInfo.videoUrl">
+      <div class="input-mutate-container">
+        <div class="input-box-item">
+          <x-icon
+            type="ios-plus-empty"
+            size="30"
+            style="position: relative;top: 50%;transform: translateY(-50%);"
+          ></x-icon>
+          <input class="file-input" type="file" accept="video/*" @change="changeVideo($event)" />
+        </div>
+        <div class="tip-item" style="padding-left:13px;">
+          <div>
+            支持拍摄/上传视频
+            <br />视频格式：最大时长为1分钟
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- 自定义视频控件 -->
     <div style="position:relative;">
       <video id="customVideo" class="video" :src="cdnVideoSrc"></video>
@@ -338,9 +392,17 @@ export default {
           this.eCardInfo.audioUrl = res1.data.resultContent.url;
           this.eCardInfo.videoUrl = res2.data.resultContent.url;
           // 发送第二波请求
-          apiECard.eCardUpdate(this.eCardInfo).then(() => {});
+          apiECard.eCardUpdate(this.eCardInfo).then(() => {
+            this.saveSuccess()
+          });
         })
       );
+    },
+    // 保存成功调用,保存请求成功后
+    saveSuccess() {
+      this.$vux.toast.show({
+        text: "保存成功"
+      });
     },
     // 发起上传压缩图片64码
     uploadImageLrz(files) {
@@ -409,6 +471,37 @@ export default {
     }
     .audio-box {
       display: inline-block;
+    }
+  }
+  .input-mutate-container {
+    display: flex;
+    align-items: center;
+    .input-box-item {
+      width: 80px;
+      height: 80px;
+      border: 1px dashed #d9d9d9;
+      text-align: center;
+      position: relative;
+      .file-input {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+      }
+    }
+    .tip-item {
+      font-size: 12px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: rgba(181, 182, 183, 1);
+      line-height: 20px;
+    }
+  }
+  .xingxiang-img-container {
+    .img-container {
+      position: relative;
     }
   }
   .video {

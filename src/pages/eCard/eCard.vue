@@ -60,14 +60,24 @@
       </div>
     </div>
     <!-- 音频块 -->
-    <div>
+    <div v-show="eCardInfo.audioUrl">
       <div class="audio-container">
         <div class="img-box">
           <img :src="headerSrc" alt />
         </div>
-        <div class="audio-box">
-          <div @click="clickAudioPlay">{{audioDuration}}"</div>
-          <audio ref="audio" class="audio" :src="audioUrl" controls autoplay></audio>
+        <div style="padding-left:5px;">
+          <div class="audio-box">
+            <!-- 单击表面音频根据 音频的有无 进行播放/选择文件操作 -->
+            <input
+              v-show="!eCardInfo.audioUrl"
+              class="file-input"
+              type="file"
+              accept="audio/*"
+              @change="changeAudio($event)"
+            />
+            <div @click="clickAudioPlay">{{audioDuration}}"</div>
+            <audio ref="audio" class="audio" :src="eCardInfo.audioUrl" controls autoplay></audio>
+          </div>
         </div>
       </div>
     </div>
@@ -78,27 +88,41 @@
         <input type="file" accept="audio/*" @change="changeaudio($event)" />
       </div>
     </div>
+    <!-- 视频块 -->
     <div>
-      <video class="video" :src="cdnVideoSrc" controls></video>
       <!-- 自定义视频控件 -->
       <div
         id="video-container"
+        class="video-container"
         @webkitfullscreenchange="fullscreenchange"
         style="position:relative;"
       >
-        <div>
+        <div ref="videoBox" class="video-box">
           <video id="customVideo" class="video" :src="cdnVideoSrc"></video>
-        </div>
-        <div class="custom-video-controls">
-          <div>
-            <button @click.stop="clickPlay">播放/暂停</button>
-            <button @click.stop="clickFullScreen">全屏与否</button>
+          <div class="custom-video-controls">
+            <div>
+              <button @click.stop="clickPlay">播放/暂停</button>
+              <button @click.stop="clickFullScreen">全屏与否</button>
+            </div>
           </div>
         </div>
       </div>
       <div>
         <button>录制视频</button>
         <input type="file" accept="video/*" @change="changeVideo($event)" />
+      </div>
+    </div>
+    <!-- 文本域块 -->
+    <div>
+      <div class="textarea-box">
+        <textarea
+          class="textarea"
+          v-model="eCardInfo.introduction"
+          cols="30"
+          rows="10"
+          placeholder="我的个人简介..."
+        ></textarea>
+        <div class="tip">右下角提示信息</div>
       </div>
     </div>
   </div>
@@ -118,7 +142,6 @@ export default {
         microMessageNum: ""
       },
       headerSrc: "",
-      audioUrl: "",
       audioDuration: 0, // 音频时长
       videoSrc: "",
       customVideo: "",
@@ -135,6 +158,18 @@ https://v-cdn.zjol.com.cn/276984.mp4
 https://v-cdn.zjol.com.cn/276985.mp4
        */
     };
+  },
+  watch: {
+    // 对文本域双向绑定的值做字数限制, 调整需改两处
+    "eCardInfo.introduction": {
+      handler: function() {
+        if (this.eCardInfo.introduction.length > 500) {
+          this.eCardInfo.introduction = String(
+            this.eCardInfo.introduction
+          ).slice(0, 500);
+        }
+      }
+    }
   },
   mounted() {
     this.customVideo = document.getElementById("customVideo");
@@ -183,7 +218,7 @@ https://v-cdn.zjol.com.cn/276985.mp4
         var reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = res => {
-          this.audioUrl = res.currentTarget.result;
+          this.eCardInfo.audioUrl = res.currentTarget.result;
         };
       }
     },
@@ -226,6 +261,9 @@ https://v-cdn.zjol.com.cn/276985.mp4
           else if (videoContainer.msExitFullscreen)
             videoContainer.msExitFullscreen();
           this.isFullScreen = false;
+          this.$refs.videoBox.style.width = "auto";
+          this.$refs.videoBox.style.height = "66vw";
+          this.$refs.videoBox.style.transform = "rotate(0deg)";
         } else {
           const videoContainer = this.videoContainerElement;
           if (videoContainer.requestFullscreen)
@@ -237,6 +275,9 @@ https://v-cdn.zjol.com.cn/276985.mp4
           else if (videoContainer.msRequestFullscreen)
             videoContainer.msRequestFullscreen();
           this.isFullScreen = true;
+          this.$refs.videoBox.style.width = "100vh";
+          this.$refs.videoBox.style.height = "100vw";
+          this.$refs.videoBox.style.transform = "rotate(90deg)";
         }
       } else {
         alert("此浏览器不支持全屏");
@@ -319,6 +360,8 @@ https://v-cdn.zjol.com.cn/276985.mp4
   }
 
   .audio-container {
+    display: flex;
+    align-items: center;
     .img-box {
       width: 50px;
       height: 50px;
@@ -351,11 +394,25 @@ https://v-cdn.zjol.com.cn/276985.mp4
         top: 50%;
         transform: translate(0, -50%);
       }
+      .file-input {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        opacity: 0;
+      }
+    }
+  }
+  .video-container {
+    .video-box {
+      position: relative;
     }
   }
   .video {
     width: 100%;
-    height: 66vw;
+    height: 100%;
     background: yellowgreen;
   }
   .custom-video-controls {
@@ -363,6 +420,22 @@ https://v-cdn.zjol.com.cn/276985.mp4
     left: 0;
     bottom: 0;
     display: flex;
+  }
+  .textarea-box {
+    position: relative;
+    .textarea {
+      width: 100%;
+    }
+    .tip {
+      position: absolute;
+      right: 5px;
+      bottom: 5px;
+      font-size: 12px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: rgba(181, 182, 183, 1);
+      line-height: 17px;
+    }
   }
 }
 </style>
