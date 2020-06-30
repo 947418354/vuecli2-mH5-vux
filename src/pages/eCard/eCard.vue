@@ -133,6 +133,7 @@
  * 个人电子名片页
  * 拍照头像， 录音说明， 视频介绍。
  */
+import { Rater } from 'vux'
 
 export default {
   data() {
@@ -170,6 +171,9 @@ https://v-cdn.zjol.com.cn/276985.mp4
         }
       }
     }
+  },
+  components: {
+    Rater
   },
   mounted() {
     this.customVideo = document.getElementById("customVideo");
@@ -408,6 +412,7 @@ https://v-cdn.zjol.com.cn/276985.mp4
   .video-container {
     .video-box {
       position: relative;
+      transform-origin: 50vw 50vw;
     }
   }
   .video {
