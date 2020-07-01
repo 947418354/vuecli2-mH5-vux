@@ -44,7 +44,7 @@
           <div class="img-box" style="width:14px;">
             <img src="@/assets/img/eCard/priseIcon.png" alt />
           </div>
-          靠谱 {{eCardInfo.praiseNo}}
+          <span style="padding-left:3px;">靠谱 {{eCardInfo.praiseNo}}</span>
         </div>
         <div class="star-box">
           <span style="vertical-align: middle;">评分:</span>
@@ -344,6 +344,8 @@ https://v-cdn.zjol.com.cn/276985.mp4
     }
     .prise-item {
       width: 30%;
+      display: flex;
+      align-items: center;
     }
     .star-box {
       width: 40%;

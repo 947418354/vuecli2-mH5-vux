@@ -15,7 +15,7 @@
                   @change="changeHeader($event)"
                 />
                 <div class="img-box">
-                  <img id="header-img" :src="eCardInfo.headerUrl" alt />
+                  <img :src="eCardInfo.headerUrl" alt />
                 </div>
               </div>
             </div>
@@ -71,6 +71,15 @@
     <!-- input变形块 -->
     <div>
       <div class="input-mutate-container">
+        <div v-show="eCardInfo.imgUrl" class="img-box-item img-box">
+          <img :src="eCardInfo.imgUrl" alt @click="onClickImg" />
+          <x-icon
+            type="ios-close"
+            size="20"
+            @click.stop="onClickClearImg"
+            style="position: absolute;top: -10px;right:-20px;fill: rgba(0,0,0,0.3)"
+          ></x-icon>
+        </div>
         <div class="input-box-item">
           <x-icon
             type="ios-plus-empty"
@@ -91,7 +100,7 @@
       <div class="xingxiang-img-container">
         <div class="img-container">
           <div class="img-box">
-            <img id="header-img" :src="eCardInfo.imgUrl || headerSrc" alt @click="onClickImg" />
+            <img :src="eCardInfo.imgUrl" alt @click="onClickImg" />
           </div>
           <!-- <input
             class="opacity0-file-input"
@@ -105,9 +114,25 @@
     <video class="video" :src="videoSrc" controls></video>
     <!-- 视频区 -->
     <!-- input变形块 -->
-    <div v-show="!eCardInfo.videoUrl">
-      <div class="input-mutate-container">
-        <div class="input-box-item">
+    <div v-show="!eCardInfo.videoUrl || true">
+      <div class="input-video-mutate-container input-mutate-container">
+        <div v-show="eCardInfo.videoUrl" class="video-box-item img-box-item">
+          <!-- 此视频作为封面假视频使用 -->
+          <div style="height: 100%; overflow: hidden;">
+            <video
+              :src="eCardInfo.videoUrl"
+              @click="onClickFaceVideo"
+              style="width:100%;height:100%;"
+            ></video>
+          </div>
+          <x-icon
+            type="ios-close"
+            size="20"
+            @click.stop="onClickClearVideo"
+            style="position: absolute;top: -10px;right:-20px;fill: rgba(0,0,0,0.3)"
+          ></x-icon>
+        </div>
+        <div v-show="!eCardInfo.videoUrl" class="input-box-item">
           <x-icon
             type="ios-plus-empty"
             size="30"
@@ -123,6 +148,7 @@
         </div>
       </div>
     </div>
+    <!-- 视频整块预览 -->
     <!-- 自定义视频控件 -->
     <div style="position:relative;">
       <video id="customVideo" class="video" :src="cdnVideoSrc"></video>
@@ -142,6 +168,7 @@
       :imgUrl="changeUrl"
       @confirm="cropperDialogConfirm"
     ></cropperDialog>
+    <playVideoDialog :visible.sync="isPlayVideoDialog" :url="eCardInfo.videoUrl"></playVideoDialog>
   </div>
 </template>
 
@@ -153,6 +180,7 @@
  */
 // import Cropper from "cropperDialogjs";
 import cropperDialog from "@/components/dialog/cropperDialog/cropperDialog";
+import playVideoDialog from "@/components/dialog/playVideoDialog/playVideoDialog";
 import lrz from "lrz";
 import axios from "axios";
 
@@ -160,7 +188,8 @@ export default {
   data() {
     return {
       eCardInfo: {
-        headerUrl: "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg"
+        headerUrl: "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg",
+        videoUrl: ""
       },
       changeUrl: "",
       audioSrc: "",
@@ -173,11 +202,13 @@ export default {
         callNum: "18912341234",
         microMessageNum: "weixinnum"
       },
-      isCropperShow: false
+      isCropperShow: false,
+      isPlayVideoDialog: false
     };
   },
   components: {
-    cropperDialog
+    cropperDialog,
+    playVideoDialog
   },
   mounted() {
     this.customVideo = document.getElementById("customVideo");
@@ -202,6 +233,9 @@ export default {
     },
     cropperDialogConfirm(img64) {
       this.eCardInfo.headerUrl = img64;
+    },
+    onClickImg() {
+      this.isViewImgDialog = true;
     },
     changeAudio(e) {
       // 'http://music.163.com/song/media/outer/url?id=562598065.mp3'
@@ -249,6 +283,10 @@ export default {
         this.eCardInfo.audioUrl = res.currentTarget.result;
       };
     },
+    clickAudioPlay() {
+      const audio = this.$refs.audio;
+      audio.play();
+    },
     // 自定义音频触摸开始事件, 实现长按删除确认框
     touchstart() {
       var _this = this;
@@ -280,7 +318,7 @@ export default {
     changeVideo(e) {
       const xuqiuConfig = {
         isTimeLimit: true, // 选择的音频是否限制时长?
-        timeLimit: 60 // 时间限制多少? 单位秒.isTimeLimit为true时有意义
+        timeLimit: 600 // 时间限制多少? 单位秒.isTimeLimit为true时有意义
       };
       let file = e.target.files[0];
       if (file instanceof File) {
@@ -321,9 +359,13 @@ export default {
         this.eCardInfo.videoUrl = res.currentTarget.result;
       };
     },
-    clickAudioPlay() {
-      const audio = this.$refs.audio;
-      audio.play();
+    onClickClearVideo() {
+      this.eCardInfo.videoUrl = "";
+      this.videoFile = "";
+    },
+    // 点击选择的视频假封面
+    onClickFaceVideo() {
+      this.isPlayVideoDialog = true;
     },
     // 自定义视频控件点击播放/暂停
     clickPlay() {
@@ -393,7 +435,7 @@ export default {
           this.eCardInfo.videoUrl = res2.data.resultContent.url;
           // 发送第二波请求
           apiECard.eCardUpdate(this.eCardInfo).then(() => {
-            this.saveSuccess()
+            this.saveSuccess();
           });
         })
       );
@@ -476,6 +518,15 @@ export default {
   .input-mutate-container {
     display: flex;
     align-items: center;
+    .img-box-item {
+      width: 80px;
+      height: 80px;
+      position: relative;
+      img {
+        height: 100%;
+        object-fit: cover;
+      }
+    }
     .input-box-item {
       width: 80px;
       height: 80px;
@@ -502,6 +553,13 @@ export default {
   .xingxiang-img-container {
     .img-container {
       position: relative;
+    }
+  }
+  .input-video-mutate-container {
+    .video-box-item {
+      video {
+        object-fit: cover;
+      }
     }
   }
   .video {
