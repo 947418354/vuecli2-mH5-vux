@@ -71,7 +71,8 @@ export default {
     return {
       mescroll: null,
       mescrollDown: {
-        isLock: true
+        // isLock: true,
+        callback: this.mescrollDownCallBack,
       },
       mescrollUp: {
         //上拉配置
@@ -129,6 +130,11 @@ export default {
   methods: {
     mescrollInit(mescroll) {
       this.mescroll = mescroll;
+    },
+    // 下拉回调
+    mescrollDownCallBack(mescroll) {
+      // 下拉刷新
+      mescroll.resetUpScroll()
     },
     upCallback(page, mescroll) {
       console.log("上拉回调");

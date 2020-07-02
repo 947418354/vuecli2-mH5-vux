@@ -11,7 +11,7 @@
                 @change="changeHeader($event)"
                 style="position: absolute; width: 100%; height: 100%; opacity: 0;"
               />
-              <img :src="headerSrc" alt style="width: 100%; height: 100%;" />
+              <img v-lazy="{src: eCardInfo.headImgUrl, error: '/app/static/img/defaultHead.png'}" alt style="width: 100%; height: 100%;" />
             </div>
           </div>
           <div>

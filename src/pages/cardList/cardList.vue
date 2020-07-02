@@ -67,8 +67,13 @@ export default {
 <style lang="less">
 .card-list-page {
   .card-two {
-    height: 80px;
+    height: 90px; // 跟内部img-box高度保持一致 2处
     display: flex;
+    box-sizing: content-box;
+    padding: 19px 0;
+    & + .card-two {
+      border-top:2px solid #EEEEEE;
+    }
     .title {
       font-size: 16px;
       font-family: PingFangSC-Medium, PingFang SC;
