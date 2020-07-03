@@ -13,10 +13,8 @@
             </div>
             <div>
               <div class="info-container">
-                <div>
-                  <div class="inline-block">{{item.nickName || '静态昵称'}}</div>
-                  <div class="date inline-block">{{formatterDateTime(item.createTime)}}</div>
-                </div>
+                <div class="inline-block">{{item.nickName || '静态昵称'}}</div>
+                <div class="date inline-block" style="padding-left:9px;">{{formatterDateTime(item.createTime)}}</div>
               </div>
               <div class="comment-divtext">{{item.comment}}</div>
               <div>
@@ -128,9 +126,9 @@ export default {
             nickName: "昵称",
             action: "浏览行为",
             dateTime: "2020/06/06 22:00:00",
-            comment: '文字评价',
+            comment: "文字评价",
             score: 2.5,
-            isShow: false,
+            isShow: false
           });
         }
         const resultContent = {

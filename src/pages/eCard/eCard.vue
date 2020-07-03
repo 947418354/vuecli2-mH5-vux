@@ -4,14 +4,23 @@
       <div class="traditional-card-container">
         <div style="display: flex; justify-content: between;">
           <div class="header-item">
-            <div style="position: relative; width: 50px; height: 50px;">
+            <!-- 给img-box设置背景默认两性图片,真实头像有则覆盖其上 -->
+            <div
+              class="img-box"
+              :class="{male: userGender === 'M',famale: userGender === 'F'}"
+              style="position: relative; width: 50px; height: 50px;"
+            >
               <input
                 type="file"
                 accept="image/*"
                 @change="changeHeader($event)"
                 style="position: absolute; width: 100%; height: 100%; opacity: 0;"
               />
-              <img v-lazy="{src: eCardInfo.headImgUrl, error: '/app/static/img/defaultHead.png'}" alt style="width: 100%; height: 100%;" />
+              <img
+                v-lazy="{src: eCardInfo.headImgUrl, error: '/app/static/img/defaultHead.png'}"
+                alt
+                style="width: 100%; height: 100%;"
+              />
             </div>
           </div>
           <div>
@@ -133,7 +142,7 @@
  * 个人电子名片页
  * 拍照头像， 录音说明， 视频介绍。
  */
-import { Rater } from 'vux'
+import { Rater } from "vux";
 
 export default {
   data() {
@@ -310,6 +319,15 @@ https://v-cdn.zjol.com.cn/276985.mp4
       .img-box {
         width: 50px;
         height: 50px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        &.male {
+          background-image: url("~assets/img/user/user-head-male.png");
+        }
+        &.famale {
+          background-image: url("~assets/img/user/user-head-female.png");
+        }
       }
     }
     .name-container {

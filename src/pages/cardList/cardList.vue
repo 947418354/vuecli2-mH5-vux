@@ -24,7 +24,9 @@
       <div class="body-block">
         <div class="title">{{item.title}}</div>
         <div class="content">{{item.summary}}</div>
-        <div class="date"><span>{{formatterDateTime(item.gmtModified)}}</span></div>
+        <div class="date">
+          <span>{{formatterDateTime(item.gmtModified)}}</span>
+        </div>
       </div>
     </div>
     <!-- 横向卡片 三部分 第三部分日期 -->
@@ -72,7 +74,7 @@ export default {
     box-sizing: content-box;
     padding: 19px 0;
     & + .card-two {
-      border-top:2px solid #EEEEEE;
+      border-top: 2px solid #eeeeee;
     }
     .title {
       font-size: 16px;
@@ -115,11 +117,8 @@ export default {
   }
   .card-three {
     height: 80px;
-    .title {
-      color: #000;
-    }
-    .content {
-      word-break: break-all;
+    & + .card-three {
+      border-top: 1px solid #9b9b9b;
     }
     .item-content {
       height: 100%;
@@ -135,6 +134,13 @@ export default {
     }
     .body-block {
       color: #bbb;
+      padding-left: 10px;
+    }
+    .title {
+      color: #000;
+    }
+    .content {
+      word-break: break-all;
     }
     .date-span {
       position: absolute;
