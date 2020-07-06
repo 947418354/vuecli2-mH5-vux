@@ -6,7 +6,7 @@
         <MescrollVue :down="mescrollDown" :up="mescrollUp" class="scroll-cont" @init="mescrollInit">
           <!-- 头像单独算一块布局 -->
           <div class="item card-header-duli" v-for="(item, i) of browserList" :key="i">
-            <div>
+            <div class="head-item">
               <div class="img-box border-radius">
                 <img :src="item.headImgUrl || defaultImg" alt />
               </div>
@@ -14,7 +14,10 @@
             <div>
               <div class="info-container">
                 <div class="inline-block">{{item.nickName || '静态昵称'}}</div>
-                <div class="date inline-block" style="padding-left:9px;">{{formatterDateTime(item.createTime)}}</div>
+                <div
+                  class="date inline-block"
+                  style="padding-left:9px;"
+                >{{formatterDateTime(item.createTime)}}</div>
               </div>
               <div class="comment-divtext">{{item.comment}}</div>
               <div>
@@ -201,11 +204,6 @@ export default {
       padding: 10px;
       background: #eee;
     }
-    .img-box {
-      width: 50px;
-      height: 50px;
-      margin-right: 10px;
-    }
     .info-container {
       display: flex;
     }
@@ -240,6 +238,13 @@ export default {
     }
   }
   .card-header-duli {
+    .head-item {
+      .img-box {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+      }
+    }
     .switch-item {
       width: 110px;
     }

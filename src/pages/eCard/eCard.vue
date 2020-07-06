@@ -23,13 +23,13 @@
               />
             </div>
           </div>
-          <div>
+          <div class="name-item">
             <!-- 姓名职位同行 -->
             <div class="name-container">
               <div class="name-div">{{eCardInfo.userName}}</div>
               <div class="post-div">{{eCardInfo.postName}}</div>
             </div>
-            <div>{{eCardInfo.orgName}}</div>
+            <div class="organ">{{eCardInfo.orgName}}</div>
           </div>
         </div>
         <!-- 分割线 -->
@@ -47,7 +47,7 @@
           <div class="img-box" style="width:14px;">
             <img src="@/assets/img/eCard/browserIcon.png" alt />
           </div>
-          浏览 {{eCardInfo.browseNo}}人
+          <span style="padding-left:6px;">浏览 {{eCardInfo.browseNo}}人</span>
         </div>
         <div class="prise-item">
           <div class="img-box" style="width:14px;">
@@ -57,12 +57,13 @@
         </div>
         <div class="star-box">
           <span style="vertical-align: middle;">评分:</span>
-          <Rater
+          <!-- <Rater
             :value="Number(eCardInfo.avgScore)"
             disabled
             :font-size="16"
             style="vertical-align: middle;"
-          ></Rater>
+          ></Rater> -->
+          <rater :value="Number(eCardInfo.avgScore)"></rater>
           <!-- <div>☆☆☆☆☆</div>
           <div class="real-star">★★★★★</div>-->
         </div>
@@ -142,14 +143,17 @@
  * 个人电子名片页
  * 拍照头像， 录音说明， 视频介绍。
  */
-import { Rater } from "vux";
+import rater from '@/components/rater/rater'
+// import { Rater } from "vux";
 
 export default {
   data() {
     return {
       eCardInfo: {
         orgName: "某某城某某部", // 机构名称
-        microMessageNum: ""
+        microMessageNum: "",
+        avgScore: 3.5,
+        userGender: 'M',
       },
       headerSrc: "",
       audioDuration: 0, // 音频时长
@@ -182,7 +186,7 @@ https://v-cdn.zjol.com.cn/276985.mp4
     }
   },
   components: {
-    Rater
+    rater
   },
   mounted() {
     this.customVideo = document.getElementById("customVideo");
@@ -323,10 +327,10 @@ https://v-cdn.zjol.com.cn/276985.mp4
         background-position: center;
         background-size: cover;
         &.male {
-          background-image: url("~assets/img/user/user-head-male.png");
+          // background-image: url("~assets/img/user/user-head-male.png");
         }
         &.famale {
-          background-image: url("~assets/img/user/user-head-female.png");
+          // background-image: url("~assets/img/user/user-head-female.png");
         }
       }
     }
@@ -348,6 +352,13 @@ https://v-cdn.zjol.com.cn/276985.mp4
       font-weight: 500;
       color: rgba(255, 255, 255, 1);
       line-height: 20px;
+    }
+    .organ {
+      font-size: 12px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 1);
+      line-height: 17px;
     }
     .addition-item + .addition-item {
       margin-top: 10px;

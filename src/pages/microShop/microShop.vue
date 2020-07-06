@@ -1,7 +1,7 @@
 <template>
   <div class="page p-micro-shop">
     <div class="p-title">微店</div>
-    <!-- 什么列表滚动效果更好的组件 -->
+    <!-- 上拉加载 下拉刷新的组件.不要在弹性项目中使用它 因为无法准确获取mescroll高度 导致下拉刷新bug -->
     <mescroll-vue
       ref="mescroll"
       :down="mescrollDown"

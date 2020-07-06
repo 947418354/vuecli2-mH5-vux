@@ -162,6 +162,20 @@
       <button>录制视频</button>
       <input type="file" accept="video/*" @change="changeVideo($event)" />
     </div>
+    <!-- 文本域块 -->
+    <div>
+      <div class="textarea-box">
+        <textarea
+          class="textarea"
+          v-model="eCardInfo.introduction"
+          cols="30"
+          rows="10"
+          placeholder="请输入个人简介…"
+        ></textarea>
+        <!-- <div class="tip">最多输入500字</div> -->
+        <div class="tip">{{textareaHaveNum}}/500</div>
+      </div>
+    </div>
     <cropperDialog
       v-if="isCropperShow"
       :visible.sync="isCropperShow"
@@ -189,7 +203,8 @@ export default {
     return {
       eCardInfo: {
         headerUrl: "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg",
-        videoUrl: ""
+        videoUrl: "",
+        introduction: '',
       },
       changeUrl: "",
       audioSrc: "",
@@ -205,6 +220,22 @@ export default {
       isCropperShow: false,
       isPlayVideoDialog: false
     };
+  },
+  computed: {
+    textareaHaveNum: function() {
+      return this.eCardInfo.introduction.length
+    }
+  },
+  watch: {
+    "eCardInfo.introduction": {
+      handler: function() {
+        if (this.eCardInfo.introduction.length > 500) {
+          this.eCardInfo.introduction = String(
+            this.eCardInfo.introduction
+          ).slice(0, 500);
+        }
+      }
+    },
   },
   components: {
     cropperDialog,
@@ -571,6 +602,32 @@ export default {
     left: 0;
     bottom: 0;
     display: flex;
+  }
+  .textarea-box {
+    border-radius: 4px;
+    border: 1px solid rgba(230, 232, 237, 1);
+    background: rgba(255, 255, 255, 1);
+    padding: 10px;
+    .textarea {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      outline: none;
+      resize: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+    .tip {
+      text-align: right;
+      right: 5px;
+      bottom: 5px;
+      font-size: 12px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: rgba(181, 182, 183, 1);
+      line-height: 17px;
+    }
   }
 }
 </style>
