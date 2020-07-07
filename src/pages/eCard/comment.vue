@@ -1,8 +1,8 @@
 <template>
   <!-- eslint-disable -->
   <div class="page comment-list-page">
-    <div>
-      <div class="comment-list-container">
+    <div style="height:100%;">
+      <div class="comment-list-container" style="height:100%;">
         <MescrollVue :down="mescrollDown" :up="mescrollUp" class="scroll-cont" @init="mescrollInit">
           <!-- 头像单独算一块布局 -->
           <div class="item card-header-duli" v-for="(item, i) of browserList" :key="i">
@@ -199,9 +199,7 @@ export default {
     .item {
       display: flex;
       justify-content: space-between;
-      margin: 10px;
       border-radius: 5px;
-      padding: 10px;
       background: #eee;
     }
     .info-container {
@@ -222,6 +220,7 @@ export default {
       line-height: 17px;
     }
     .comment-divtext {
+      word-break: break-all;
       text-align: left;
       font-size: 16px;
       font-family: PingFangSC-Medium, PingFang SC;
@@ -238,6 +237,7 @@ export default {
     }
   }
   .card-header-duli {
+    padding: 20px 10px;
     .head-item {
       .img-box {
         width: 50px;

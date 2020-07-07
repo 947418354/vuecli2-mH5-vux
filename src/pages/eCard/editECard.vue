@@ -617,6 +617,13 @@ export default {
       &::-webkit-scrollbar {
         display: none;
       }
+      &::-webkit-input-placeholder {
+        font-size: 14px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: rgba(181, 182, 183, 1);
+        line-height: 20px;
+      }
     }
     .tip {
       text-align: right;

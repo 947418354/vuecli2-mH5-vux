@@ -33,18 +33,18 @@
     <div class="card-three" v-for="(item, i) of browserList" :key="i">
       <!-- <div class="inline-block">{{ele.id}}</div> -->
       <div class="item-content">
-        <div class="inline-block">
+        <div class>
           <div class="img-box">
             <img :src="item.coverUrl" alt />
           </div>
         </div>
-        <div class="body-block inline-block" style="width: 49%;">
+        <div class="body-block" style="width: 49%;">
           <div>
             <div class="title">{{item.title}}</div>
             <div class="content">{{item.summary}}</div>
           </div>
         </div>
-        <div class="inline-block" style="width: 23%;">
+        <div class="data-item" style="width: 23%;">
           <span class="date-span">{{formatterDateTime(item.gmtModified)}}</span>
         </div>
       </div>
@@ -122,6 +122,7 @@ export default {
     }
     .item-content {
       height: 100%;
+      display: flex;
       & > .inline-block {
         height: 100%;
         position: relative;
@@ -137,10 +138,17 @@ export default {
       padding-left: 10px;
     }
     .title {
-      color: #000;
+      font-size: 14px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: rgba(74, 74, 74, 1);
+      line-height: 20px;
     }
     .content {
       word-break: break-all;
+    }
+    .date-item {
+      position: relative;
     }
     .date-span {
       position: absolute;
