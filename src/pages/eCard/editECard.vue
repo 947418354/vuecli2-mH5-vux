@@ -356,8 +356,6 @@ export default {
         if (xuqiuConfig.isTimeLimit) {
           var url = URL.createObjectURL(file);
           var videoElement = document.createElement("video");
-          videoElement.src = url;
-          var duration;
           videoElement.addEventListener("loadedmetadata", _event => {
             duration = videoElement.duration;
             console.log(duration + "s");
@@ -376,6 +374,8 @@ export default {
               this.tempSaveVideo(file);
             }
           });
+          videoElement.src = url;
+          var duration;
         } else {
           this.tempSaveVideo(file);
         }
@@ -416,7 +416,7 @@ export default {
       // axios并发请求准备
       const iterable = [];
       // 如果更改了图片,图片压缩上传
-      if (this.eCardInfo.imgUrl.indexOf("http") !== 0) {
+      if (this.eCardInfo.imgUrl && this.eCardInfo.imgUrl.indexOf("http") !== 0) {
         // 压缩并上传
         await lrz(this.eCardInfo.imgUrl)
           .then(rst => {

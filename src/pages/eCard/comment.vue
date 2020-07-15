@@ -4,14 +4,14 @@
     <div style="height:100%;">
       <div class="comment-list-container" style="height:100%;">
         <MescrollVue :down="mescrollDown" :up="mescrollUp" class="scroll-cont" @init="mescrollInit">
-          <!-- 头像单独算一块布局 -->
+          <!-- 头像单独算一块布局 横向评论 -->
           <div class="item card-header-duli" v-for="(item, i) of browserList" :key="i">
             <div class="head-item">
               <div class="img-box border-radius">
                 <img :src="item.headImgUrl || defaultImg" alt />
               </div>
             </div>
-            <div>
+            <div class="body-item">
               <div class="info-container">
                 <div class="inline-block">{{item.nickName || '静态昵称'}}</div>
                 <div
@@ -26,12 +26,13 @@
               </div>
             </div>
             <div class="switch-item">
-              <XSwitch
+              <zswitch v-model="item.isChecked"></zswitch>
+              <!-- <XSwitch
                 class="x-switch inline-block"
                 v-model="item.open"
                 title
                 @on-change="changeSwitch(item)"
-              ></XSwitch>
+              ></XSwitch> -->
               <div class="x-switch-tip inline-block">{{formatterIsShow(item.open)}}</div>
             </div>
           </div>
@@ -74,6 +75,7 @@
 评价列表页
  */
 import MescrollVue from "mescroll.js/mescroll";
+import zswitch from '@/components/switch/switch';
 import { XSwitch, Rater } from "vux";
 import { isNumber } from "lodash";
 import { formatDateTime } from "@/utils/date";
@@ -82,7 +84,11 @@ import { formatDateTime } from "@/utils/date";
 export default {
   data() {
     return {
-      browserList: [],
+      browserList: [
+        {
+          isChecked: false,
+        }
+      ],
       mescroll: "",
       mescrollDown: {
         isLock: true
@@ -105,8 +111,17 @@ export default {
       defaultImg: "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg"
     };
   },
+  watch: {
+    browserList: {
+      deep: true,
+      handler: function(n) {
+        console.log(n)
+      }
+    }
+  },
   components: {
     MescrollVue,
+    zswitch,
     XSwitch,
     Rater
   },
@@ -131,6 +146,7 @@ export default {
             dateTime: "2020/06/06 22:00:00",
             comment: "文字评价",
             score: 2.5,
+            isChecked: false,
             isShow: false
           });
         }
@@ -244,6 +260,9 @@ export default {
         height: 50px;
         margin-right: 10px;
       }
+    }
+    .body-item {
+      flex-grow: 1;
     }
     .switch-item {
       width: 110px;

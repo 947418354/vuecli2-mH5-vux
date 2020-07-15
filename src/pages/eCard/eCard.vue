@@ -359,6 +359,7 @@ https://v-cdn.zjol.com.cn/276985.mp4
       font-weight: 500;
       color: rgba(255, 255, 255, 1);
       line-height: 17px;
+      margin-top: 6px;
     }
     .addition-item + .addition-item {
       margin-top: 10px;
