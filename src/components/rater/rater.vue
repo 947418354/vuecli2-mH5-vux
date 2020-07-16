@@ -1,6 +1,6 @@
 <template>
   <div class="m-rater-comp">
-    <div>
+    <div class="star-container">
       <div class="img-box">
         <img src="./img/no.png" alt />
       </div>
@@ -17,7 +17,7 @@
         <img src="./img/no.png" alt />
       </div>
     </div>
-    <div class="have-container" :style="{ 'width': value / 5 * 100 + '%'}">
+    <div class="have-container star-container" :style="{ 'width': value / 5 * 100 + '%'}">
       <div class="img-box">
         <img src="./img/have.png" alt />
       </div>
@@ -48,7 +48,7 @@ export default {
   watch: {
     value: {
       handler: function(n, o) {
-        n / 5 * 100 + '%'
+        (n / 5) * 100 + "%";
       }
     }
   }
@@ -60,10 +60,14 @@ export default {
   position: relative;
   display: inline-block;
   vertical-align: middle;
-  .img-box {
-    width: 15px;
-    & + .img-box {
-      margin-left: 1px;
+  .star-container {
+    display: flex;
+    .img-box {
+      width: 15px;
+      flex-shrink: 0;
+      & + .img-box {
+        margin-left: 1px;
+      }
     }
   }
   .have-container {

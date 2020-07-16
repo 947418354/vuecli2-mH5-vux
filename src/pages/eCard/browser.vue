@@ -3,7 +3,8 @@
     <div class="browser-block">
       <div class="browser-container">
         <MescrollVue :down="mescrollDown" :up="mescrollUp" class="scroll-cont" @init="mescrollInit">
-          <div class="item" v-for="(ele, i) of browserList" :key="ele.id">
+          <!-- 以下内容插入默认插槽div下 -->
+          <div class="card-three" v-for="(ele, i) of browserList" :key="ele.id">
             <div class="inline-block">
               <div class="img-box">
                 <img src="https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg" alt />
@@ -12,9 +13,6 @@
             <div class="inline-block">昵称</div>
             <div class="browser-action inline-block">浏览动作</div>
             <div class="inline-block">2020/06/06 22:00:00</div>
-          </div>
-          <!-- 无数据时,此元素将被索引到,被给他插入孩纸 -->
-          <div id="nodata" class="m-list-nodata">
           </div>
         </MescrollVue>
       </div>
@@ -130,10 +128,13 @@ export default {
     .scroll-cont {
       background: pink;
     }
-    .item {
+    .card-three {
       margin: 10px;
+      &:last-child {
+        border-bottom: 1px solid rgba(155, 155, 155, 0.2);
+      }
     }
-    .item > .inline-block {
+    .card-three > .inline-block {
       vertical-align: middle;
     }
     .img-box {
