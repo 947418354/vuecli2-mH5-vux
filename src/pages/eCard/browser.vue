@@ -17,6 +17,7 @@
         </MescrollVue>
       </div>
     </div>
+    <jiuDialog></jiuDialog>
   </div>
 </template>
 
@@ -25,6 +26,7 @@
  * 浏览痕迹页
  */
 import MescrollVue from "mescroll.js/mescroll";
+import jiuDialog from '@/components/dialog/jiuDialog/jiuDialog'
 
 export default {
   data() {
@@ -52,7 +54,8 @@ export default {
     };
   },
   components: {
-    MescrollVue
+    MescrollVue,
+    jiuDialog
   },
   methods: {
     mescrollInit(mescroll) {

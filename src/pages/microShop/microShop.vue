@@ -50,11 +50,13 @@
         </swipeout>
       </div>
     </mescroll-vue>
+    <jiuDialog></jiuDialog>
   </div>
 </template>
 
 <script>
 import { find, isNumber } from "lodash";
+import jiuDialog from '@/components/dialog/jiuDialog/jiuDialog'
 import {
   Tab,
   TabItem,
@@ -125,7 +127,8 @@ export default {
     SwipeoutItem,
     SwipeoutButton,
     draggable,
-    MescrollVue
+    MescrollVue,
+    jiuDialog,
   },
   methods: {
     mescrollInit(mescroll) {

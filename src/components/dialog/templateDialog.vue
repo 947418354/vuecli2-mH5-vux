@@ -1,6 +1,6 @@
 <template>
   <!-- eslint-disable -->
-  <div class="my-play-video-dialog" v-show="visible">
+  <div class="play-video-dialog" v-show="visible">
     <div class="dialog-relative" @click="onClickMask">
       <div>
         
@@ -22,7 +22,6 @@ export default {
     visible: {
       type: Boolean
     },
-    url: {}
   },
   mounted() {
     

@@ -50,18 +50,21 @@
             <div class="audio-box">
               <!-- <div @click="clickAudioPlay">覆盖audio</div> -->
               <div @touchstart.prevent="touchstart" @touchend.prevent="touchend">覆盖audio</div>
-              <audio ref="audio" class="audio" :src="audioSrc" controls autoplay></audio>
+              <audio ref="audio" class="audio" :src="eCardInfo.audioUrl" controls autoplay></audio>
             </div>
           </div>
         </div>
         <div>
           <div class="audio-get-shadow-box">
-            <input
-              class="opacity0-file-input"
-              type="file"
-              accept="audio/*"
-              @change="changeAudio($event)"
-            />
+            <!-- input-box的意思在于 input自替换时 通过其控制显示与否 -->
+            <div v-show="!eCardInfo.audioUrl" class="input-box">
+              <input
+                class="opacity0-file-input"
+                type="file"
+                accept="audio/*"
+                @change="changeAudio($event)"
+              />
+            </div>
             <button>录制音频</button>
           </div>
         </div>
@@ -111,7 +114,7 @@
         </div>
       </div>
     </div>
-    <video class="video" :src="videoSrc" controls></video>
+    <video class="video" :src="eCardInfo.videoUrl" controls></video>
     <!-- 视频区 -->
     <!-- input变形块 -->
     <div v-show="!eCardInfo.videoUrl || true">
@@ -204,11 +207,11 @@ export default {
       eCardInfo: {
         headerUrl: "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg",
         videoUrl: "",
-        introduction: '',
+        introduction: ""
       },
       changeUrl: "",
-      audioSrc: "",
-      videoSrc: "",
+      audioLocalUrl: "", // 音频本地url
+      videoLocalUrl: "", // 视频本地url
       customVideo: "",
       readCurrentTimeInterval: "",
       videoCurrentTime: "", // 视频当前时间,双精度浮点型 单位秒
@@ -223,7 +226,7 @@ export default {
   },
   computed: {
     textareaHaveNum: function() {
-      return this.eCardInfo.introduction.length
+      return this.eCardInfo.introduction.length;
     }
   },
   watch: {
@@ -235,7 +238,7 @@ export default {
           ).slice(0, 500);
         }
       }
-    },
+    }
   },
   components: {
     cropperDialog,
@@ -248,6 +251,9 @@ export default {
     }, 1000);
   },
   beforeDestroy() {
+    // 清除本地音视频url
+    URL.revokeObjectURL(this.audioLocalUrl);
+    URL.revokeObjectURL(this.videoLocalUrl);
     clearInterval(this.readCurrentTimeInterval);
   },
   methods: {
@@ -277,10 +283,10 @@ export default {
       };
       let file = e.target.files[0];
       if (file instanceof File) {
-        // console.log("音频文件变化选择的音频文件", file);
+        URL.revokeObjectURL(this.audioLocalUrl);
+        this.audioLocalUrl = URL.createObjectURL(file);
         if (xuqiuConfig.isTimeLimit) {
-          var url = URL.createObjectURL(file);
-          var audioElement = new Audio(url);
+          var audioElement = new Audio(this.audioLocalUrl);
           var duration;
           audioElement.addEventListener("loadedmetadata", _event => {
             duration = audioElement.duration;
@@ -303,6 +309,13 @@ export default {
         } else {
           this.tempSaveAudio(file);
         }
+        // 用新的文件input替换旧的文件input 以实现input的files清空 就可以重复选择同一文件了
+        const input = document.createElement("input");
+        input.classList.add("opacity0-file-input");
+        input.type = "file";
+        input.accept = "audio/*";
+        input.addEventListener("change", this.changeAudio);
+        e.target.replaceWith(input);
       }
     },
     // 选择的符合要求的音频进行暂存,并渲染到页面
@@ -353,8 +366,9 @@ export default {
       };
       let file = e.target.files[0];
       if (file instanceof File) {
+        URL.revokeObjectURL(this.videoLocalUrl);
+        this.videoLocalUrl = URL.createObjectURL(file);
         if (xuqiuConfig.isTimeLimit) {
-          var url = URL.createObjectURL(file);
           var videoElement = document.createElement("video");
           videoElement.addEventListener("loadedmetadata", _event => {
             duration = videoElement.duration;
@@ -374,11 +388,18 @@ export default {
               this.tempSaveVideo(file);
             }
           });
-          videoElement.src = url;
+          videoElement.src = this.videoLocalUrl;
           var duration;
         } else {
           this.tempSaveVideo(file);
         }
+        // 用新的文件input替换旧的文件input 以实现input的files清空 就可以重复选择同一文件了
+        const input = document.createElement("input");
+        input.classList.add("file-input");
+        input.type = "file";
+        input.accept = "video/*";
+        input.addEventListener("change", this.changeVideo);
+        e.target.replaceWith(input);
       }
     },
     // 选择的符合要求的视频频进行暂存,并渲染到页面
@@ -416,7 +437,10 @@ export default {
       // axios并发请求准备
       const iterable = [];
       // 如果更改了图片,图片压缩上传
-      if (this.eCardInfo.imgUrl && this.eCardInfo.imgUrl.indexOf("http") !== 0) {
+      if (
+        this.eCardInfo.imgUrl &&
+        this.eCardInfo.imgUrl.indexOf("http") !== 0
+      ) {
         // 压缩并上传
         await lrz(this.eCardInfo.imgUrl)
           .then(rst => {
@@ -614,6 +638,11 @@ export default {
       background: transparent;
       outline: none;
       resize: none;
+      font-size: 14px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 1);
+      line-height: 20px;
       &::-webkit-scrollbar {
         display: none;
       }

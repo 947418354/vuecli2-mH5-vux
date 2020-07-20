@@ -7,7 +7,7 @@ module.exports = {
     // to edit target browsers: use "browserslist" field in package.json
     "autoprefixer": {},
     "postcss-px2rem": {
-      remUnit: 14   // 14px转换为1rem
+      remUnit: 16   // 14px转换为1rem
     },
   }
 }
