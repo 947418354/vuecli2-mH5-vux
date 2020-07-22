@@ -364,6 +364,7 @@ export default {
         isTimeLimit: true, // 选择的音频是否限制时长?
         timeLimit: 600 // 时间限制多少? 单位秒.isTimeLimit为true时有意义
       };
+      this.$vux.loading.show({ text: "视频加载中..." });
       let file = e.target.files[0];
       if (file instanceof File) {
         URL.revokeObjectURL(this.videoLocalUrl);
@@ -374,6 +375,7 @@ export default {
             duration = videoElement.duration;
             console.log(duration + "s");
             if (duration > xuqiuConfig.timeLimit) {
+              this.$vux.loading.hide();
               this.$vux.alert.show({
                 title: "选择文件失败!",
                 content: "视频文件限制时长60s",
@@ -385,6 +387,8 @@ export default {
                 }
               });
             } else {
+              this.eCardInfo.videoUrl = videoLocalUrl;
+              this.$vux.loading.hide();
               this.tempSaveVideo(file);
             }
           });
@@ -405,11 +409,11 @@ export default {
     // 选择的符合要求的视频频进行暂存,并渲染到页面
     tempSaveVideo(file) {
       this.videoFile = file;
-      var reader = new FileReader();
+      /*var reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = res => {
         this.eCardInfo.videoUrl = res.currentTarget.result;
-      };
+      };*/
     },
     onClickClearVideo() {
       this.eCardInfo.videoUrl = "";
@@ -433,7 +437,7 @@ export default {
       }
     },
     // 点击保存
-    clickSave: async function() {
+    onClickSave: async function() {
       // axios并发请求准备
       const iterable = [];
       // 如果更改了图片,图片压缩上传
@@ -476,12 +480,16 @@ export default {
       }
       if (
         this.eCardInfo.videoUrl &&
-        this.eCardInfo.videoUrl.indexOf("data:video/") !== -1
+        (this.eCardInfo.videoUrl.indexOf("blob:") !== -1 ||
+          this.eCardInfo.videoUrl.indexOf("data:video/") !== -1)
       ) {
         const formData = new FormData();
         formData.append("file", this.videoFile, this.videoFile.name);
-        console.log("视频64:", this.eCardInfo.videoUrl);
-        iterable.push(apiFile.fileUpload(formData));
+        iterable.push(
+          new Promise((resolve, reject) => {
+            apiFile.fileUpload(formData);
+          })
+        );
       }
       // axios并发核心api all,spread
       axios.all(iterable).then(
@@ -489,7 +497,7 @@ export default {
           this.eCardInfo.audioUrl = res1.data.resultContent.url;
           this.eCardInfo.videoUrl = res2.data.resultContent.url;
           // 发送第二波请求
-          apiECard.eCardUpdate(this.eCardInfo).then(() => {
+          apiECard.eCardUpdate(this.eCardInfo).then(res => {
             this.saveSuccess();
           });
         })

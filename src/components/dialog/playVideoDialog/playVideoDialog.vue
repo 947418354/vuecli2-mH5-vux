@@ -4,7 +4,7 @@
     <div class="dialog-relative" @click="onClickMask">
       <div>
         <div class="video-box">
-          <video :src="url" controls @click.stop=""></video>
+          <video ref="video" :src="url" controls @click.stop=""></video>
         </div>
       </div>
       <div class="close" @click.stop="onClickMask">×</div>
@@ -32,6 +32,16 @@ export default {
   },
   methods: {
     onClickMask() {
+      const video = this.$refs.video
+      let isPlaying =
+        video.currentTime > 0 &&
+        !video.paused &&
+        !video.ended &&
+        video.readyState > 2;
+      if (!isPlaying) {
+      } else {
+        video.pause();
+      }
       this.$emit("update:visible", false);
     },
     

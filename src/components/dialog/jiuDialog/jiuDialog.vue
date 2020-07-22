@@ -4,7 +4,7 @@
     <div class="dialog-relative" @click="onClickMask">
       <div class="dialog-body">
         <div class="jiu-container">
-          <div v-for="(item, i) of list" :key="item.code" class="jiu-item">
+          <div v-for="(item, i) of list" :key="item.code" class="jiu-item" @click="onClickJiu(item.value)">
             <div class="jiu-img-box img-box">
               <img :src="item.url" alt />
             </div>
@@ -57,6 +57,9 @@ export default {
   },
   mounted() {},
   methods: {
+    onClickJiu(value) {
+      this.$emit('onClickJiu', value)
+    },
     onClickMask() {
       this.$emit("update:visible", false);
     }
