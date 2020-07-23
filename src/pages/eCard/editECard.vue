@@ -179,6 +179,7 @@
         <div class="tip">{{textareaHaveNum}}/500</div>
       </div>
     </div>
+    <div><button @click="onClickSave">保存</button></div>
     <cropperDialog
       v-if="isCropperShow"
       :visible.sync="isCropperShow"
@@ -199,6 +200,10 @@
 import cropperDialog from "@/components/dialog/cropperDialog/cropperDialog";
 import playVideoDialog from "@/components/dialog/playVideoDialog/playVideoDialog";
 import lrz from "lrz";
+// 此视频压缩包与vux-loader互斥
+// import { createFFmpeg } from "@ffmpeg/ffmpeg";
+// const { createWorker } = require('@ffmpeg/ffmpeg')
+import fs from 'fs'
 import axios from "axios";
 
 export default {
@@ -483,6 +488,13 @@ export default {
         (this.eCardInfo.videoUrl.indexOf("blob:") !== -1 ||
           this.eCardInfo.videoUrl.indexOf("data:video/") !== -1)
       ) {
+        // const ffmpeg = createFFmpeg({ log: true })
+        // (async () => {
+        //   await ffmpeg.load();
+        //   // await ffmpeg.write("test.avi", "./test.avi");
+        //   await ffmpeg.transcode(this.videoFile, "test.mp4");
+        //   fs.writeFileSync("d://test.mp4", ffmpeg.read("test.mp4"));
+        // })();
         const formData = new FormData();
         formData.append("file", this.videoFile, this.videoFile.name);
         iterable.push(
