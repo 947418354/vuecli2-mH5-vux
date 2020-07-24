@@ -7,7 +7,7 @@
             <!-- 给img-box设置背景默认两性图片,真实头像有则覆盖其上 -->
             <div
               class="img-box"
-              :class="{male: userGender === 'M',famale: userGender === 'F'}"
+              :class="{male: eCardInfo.userGender === 'M',famale: eCardInfo.userGender === 'F'}"
               style="position: relative; width: 50px; height: 50px;"
             >
               <input
@@ -108,7 +108,7 @@
         style="position:relative;"
       >
         <div ref="videoBox" class="video-box">
-          <video id="customVideo" class="video" :src="cdnVideoSrc"></video>
+          <video id="customVideo" class="video" :src="cdnVideoSrc" autoplay></video>
           <div class="custom-video-controls">
             <div>
               <button @click.stop="clickPlay">播放/暂停</button>
@@ -191,6 +191,9 @@ https://v-cdn.zjol.com.cn/276985.mp4
   mounted() {
     this.customVideo = document.getElementById("customVideo");
     this.videoContainerElement = document.getElementById("video-container");
+    customVideo.addEventListener('waiting', () => {
+      console.log('video waiting事件')
+    })
     // 元素全屏change事件 存在兼容性问题,需加浏览器前缀
     // this.videoContainerElement.addEventListener("webkitfullscreenchange", event => {
     //   console.log('监听到事件', event)

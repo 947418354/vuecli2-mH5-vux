@@ -3,10 +3,12 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import vueLazyload from 'vue-lazyload'
 import vconsole from 'vconsole'
 
 Vue.config.productionTip = false
 
+Vue.use(vueLazyload)
 new vconsole()
 /* eslint-disable no-new */
 new Vue({

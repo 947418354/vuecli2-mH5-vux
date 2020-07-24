@@ -372,6 +372,19 @@ export default {
       this.$vux.loading.show({ text: "视频加载中..." });
       let file = e.target.files[0];
       if (file instanceof File) {
+        // 视频文件大小限制
+        if (file.size > 20000000) {
+          this.$vux.loading.hide();
+          this.$vux.alert.show({
+            title: "选择文件失败!",
+            content: "视频文件限制大小20M",
+            onShow() {
+            },
+            onHide() {
+            }
+          });
+          return
+        }
         URL.revokeObjectURL(this.videoLocalUrl);
         this.videoLocalUrl = URL.createObjectURL(file);
         if (xuqiuConfig.isTimeLimit) {
