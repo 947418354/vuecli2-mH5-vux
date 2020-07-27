@@ -39,7 +39,7 @@ export default {
       // 上拉配置
       mescrollUp: {
         callback: this.upCallback,
-        noMoreSize: 1, // 如果列表已无数据,可设置列表的总数量要大于1页的数量才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看
+        noMoreSize: 1, // 列表条数大于等于noMoreSize时 会显示htmlNodata
         page: {
           size: 15
         },

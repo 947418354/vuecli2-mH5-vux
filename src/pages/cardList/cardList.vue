@@ -73,6 +73,7 @@ export default {
     display: flex;
     box-sizing: content-box;
     padding: 19px 0;
+    // border-bottom: 2px solid #eeeeee;
     & + .card-two {
       border-top: 2px solid #eeeeee;
     }
@@ -117,6 +118,7 @@ export default {
   }
   .card-three {
     height: 80px;
+    // border-bottom: 2px solid #eeeeee;
     & + .card-three {
       border-top: 1px solid #9b9b9b;
     }
