@@ -1,6 +1,6 @@
 <template>
   <!-- eslint-disable -->
-  <div class="my-view-img-dialog" v-show="visible">
+  <div class="zh-view-img-dialog" v-show="visible">
     <div class="dialog-relative" @click="onClickMask">
       <div>
         <div id="view-img-dialog-img" class="img-box">
@@ -70,7 +70,7 @@ export default {
 </script>
 
 <style lang="less">
-.my-view-img-dialog {
+.zh-view-img-dialog {
   position: fixed;
   padding: 0 !important;
   left: 0;
@@ -78,6 +78,7 @@ export default {
   right: 0;
   bottom: 0;
   background: #000;
+  z-index: 10;
   .dialog-relative {
     width: 100%;
     height: 100%;
