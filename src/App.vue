@@ -57,6 +57,7 @@ body {
 button[type="text"] {
   background: transparent;
   border: 0;
+  outline: 0;
   font-size: 14px;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
