@@ -14,38 +14,38 @@
         </div>
       </div>
     </div>
-    <!-- 横向卡片 两部分 -->
-    <div class="card-two" v-for="(item, i) of browserList" :key="i" @click="clickTraceLog(item)">
+    <!-- 横向卡片 两部分 左边图片-->
+    <div class="card-two">
       <div>
         <div class="img-box">
-          <img :src="item.coverUrl" alt />
+          <img :src="imgUrl" alt />
         </div>
       </div>
       <div class="body-block">
-        <div class="title">{{item.title}}</div>
-        <div class="content">{{item.summary}}</div>
+        <div class="title">{item.title}}是多少实打实打算说到底说到底是谁的实打实的都是</div>
+        <div class="content">{item.summary}}sd士大夫士大夫士大夫士大夫士大夫士大夫士大夫士大夫士大夫士大夫士大夫士大夫手动阀手动阀</div>
         <div class="date">
-          <span>{{formatterDateTime(item.gmtModified)}}</span>
+          <span>{formatterDateTime(item.gmtModified)}}</span>
         </div>
       </div>
     </div>
     <!-- 横向卡片 三部分 第三部分日期 -->
-    <div class="card-three" v-for="(item, i) of browserList" :key="i">
+    <div class="card-three">
       <!-- <div class="inline-block">{{ele.id}}</div> -->
       <div class="item-content">
         <div class>
           <div class="img-box">
-            <img :src="item.coverUrl" alt />
+            <img :src="imgUrl" alt />
           </div>
         </div>
         <div class="body-block" style="width: 49%;">
           <div>
-            <div class="title">{{item.title}}</div>
-            <div class="content">{{item.summary}}</div>
+            <div class="title">{item.title}}</div>
+            <div class="content">{item.summary}}</div>
           </div>
         </div>
         <div class="data-item" style="width: 23%;">
-          <span class="date-span">{{formatterDateTime(item.gmtModified)}}</span>
+          <span class="date-span">{formatterDateTime(item.gmtModified)}}</span>
         </div>
       </div>
     </div>
@@ -58,6 +58,11 @@
  * 枚举部分常用卡片列表卡片布局
  */
 export default {
+  data() {
+    return {
+      imgUrl: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg',
+    }
+  },
   methods: {
     goBack() {
       history.back();
@@ -77,7 +82,23 @@ export default {
     & + .card-two {
       border-top: 2px solid #eeeeee;
     }
+    .img-box {
+      width: 120px;
+      height: 90px;
+    }
+    .body-block {
+      height: 100%;
+      padding-left: 12px;
+      overflow-x: hidden;
+      flex-shrink: 1;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
     .title {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
       font-size: 16px;
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
@@ -87,6 +108,10 @@ export default {
     }
     .content {
       word-break: break-all;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      text-overflow: ellipsis;
       font-size: 12px;
       font-family: PingFangSC-Regular, PingFang SC;
       font-weight: 400;
@@ -97,23 +122,14 @@ export default {
       flex-grow: 1;
     }
     .date {
+      position: absolute;
+      bottom: 0;
       flex-shrink: 0;
       font-size: 12px;
       font-family: PingFangSC-Regular, PingFang SC;
       font-weight: 400;
       color: rgba(178, 180, 180, 1);
       line-height: 17px;
-    }
-    .img-box {
-      width: 120px;
-      height: 90px;
-    }
-    .body-block {
-      height: 100%;
-      padding-left: 12px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
     }
   }
   .card-three {

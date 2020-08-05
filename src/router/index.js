@@ -62,6 +62,13 @@ export default new Router({
       components: {
         default: () => import(/* webpackChunkName: "microShop" */'../pages/microShop/microShop.vue')
       }
+    },
+    {
+      path: '/cardList',
+      name: 'cardList',
+      components: {
+        default: () => import(/* webpackChunkName: "cardList" */'../pages/cardList/cardList.vue')
+      }
     }
   ]
 })
