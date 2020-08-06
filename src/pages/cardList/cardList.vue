@@ -94,6 +94,7 @@ export default {
       flex-direction: column;
       justify-content: space-between;
       position: relative;
+      flex-grow: 1;
     }
     .title {
       overflow: hidden;
@@ -122,8 +123,8 @@ export default {
       flex-grow: 1;
     }
     .date {
-      position: absolute;
       bottom: 0;
+      position: absolute;
       flex-shrink: 0;
       font-size: 12px;
       font-family: PingFangSC-Regular, PingFang SC;
