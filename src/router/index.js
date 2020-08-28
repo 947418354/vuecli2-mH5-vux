@@ -69,6 +69,13 @@ export default new Router({
       components: {
         default: () => import(/* webpackChunkName: "cardList" */'../pages/cardList/cardList.vue')
       }
-    }
+    },
+    {
+      path: '/layout',
+      name: 'layout',
+      components: {
+        default: () => import(/* webpackChunkName: "layout" */'../pages/layout/layout.vue')
+      }
+    },
   ]
 })
