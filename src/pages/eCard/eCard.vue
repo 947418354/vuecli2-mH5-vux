@@ -412,7 +412,6 @@ https://v-cdn.zjol.com.cn/276985.mp4
     }
     .audio-box {
       display: inline-block;
-      display: inline-block;
       width: 167px;
       height: 40px;
       background: rgba(31, 149, 235, 1);

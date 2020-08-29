@@ -13,6 +13,10 @@
           <div v-show="isInsert">bbbbbbbbbb</div>
         </div>
       </collapse>
+      <div class="flex-between">
+        <div>姓名</div>
+        <div></div>
+      </div>
     </div>
   </div>
 </template>
