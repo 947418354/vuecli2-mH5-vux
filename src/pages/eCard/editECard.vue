@@ -308,7 +308,7 @@ export default {
                 }
               });
             } else {
-              this.tempSaveAudio(file);
+              this.tempSaveAudio(file, this.audioLocalUrl);
             }
           });
         } else {
@@ -324,13 +324,9 @@ export default {
       }
     },
     // 选择的符合要求的音频进行暂存,并渲染到页面
-    tempSaveAudio(file) {
+    tempSaveAudio(file, blobUrl) {
       this.audioFile = file;
-      var reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = res => {
-        this.eCardInfo.audioUrl = res.currentTarget.result;
-      };
+      this.eCardInfo.audioUrl = blobUrl
     },
     clickAudioPlay() {
       const audio = this.$refs.audio;
@@ -486,10 +482,10 @@ export default {
           })
         );*/
       }
-      // 判断文件是否有改变?
+      // 判断音频文件是否有改变?
       if (
         this.eCardInfo.audioUrl &&
-        this.eCardInfo.audioUrl.indexOf("data:audio/") !== -1
+        /^blob:/.test(this.eCardInfo.audioUrl)
       ) {
         const formData = new FormData();
         formData.append("file", this.audioFile, this.audioFile.name);
