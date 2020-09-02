@@ -58,6 +58,7 @@ export default {
   right: 0;
   bottom: 0;
   background: #000;
+  z-index: 10;
   .dialog-relative {
     width: 100%;
     height: 100%;

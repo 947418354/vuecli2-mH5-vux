@@ -88,9 +88,9 @@ export default {
       }
       history.back()
     },
-    onClickComplete() {
+    onClickComplete: debounce(() => {
       eventBus.$emit('ebOnClickComplete')
-    },
+    }, 500),
     getIsComplete() {
       return this.$router.currentRoute.name === 'editECard'
     },

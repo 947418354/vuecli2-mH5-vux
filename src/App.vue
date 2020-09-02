@@ -33,15 +33,12 @@ body {
 .page > div {
   padding: 10px;
 }
-.p-title {
-  width: 100%;
-  height: 60px;
-  position: fixed;
-  background: #062;
-  top: 0;
-  left: 0;
+.page-flex-item {
+  flex-grow: 1;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position: relative;
 }
-
 .inline-block {
   display: inline-block;
 }
