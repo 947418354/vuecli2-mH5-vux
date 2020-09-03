@@ -16,6 +16,7 @@ export default {
  */
 body {
   margin: 0;
+  font-weight: 400;
 }
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
@@ -39,8 +40,9 @@ body {
   overflow-y: scroll;
   position: relative;
 }
-.inline-block {
-  display: inline-block;
+.flex-between {
+  display: flex;
+  justify-content: space-between;
 }
 .img-box {
   display: inline-block;
@@ -48,6 +50,9 @@ body {
 .img-box > img {
   width: 100%;
   height: 100%;
+}
+.inline-block {
+  display: inline-block;
 }
 
 /**按钮 */

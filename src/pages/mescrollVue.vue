@@ -83,8 +83,13 @@ export default {
         });
         // }
       }, 2000);
-      /*request
-        .queryMsProduct()
+      /*
+      const payload = {
+        page: page.num,
+        pageSize: page.size,
+      };
+      request
+        .queryMsProduct(payload)
         .then(res => {
           if (res.data.resultFlag) {
             const { rows, total } = res.data.resultContent;
