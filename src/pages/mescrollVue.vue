@@ -2,7 +2,7 @@
   <!-- eslint-disable -->
   <MescrollVue :down="mescrollDown" :up="mescrollUp" class="scroll-cont">
     <!-- 以下内容插入默认插槽div下 -->
-    <div class="card-three" v-for="(ele, i) of mescrollVueList" :key="ele.id">
+    <div class="card-three" v-for="(item, i) of mescrollVueList" :key="item.id">
       <div class="inline-block">
         <div class="img-box">
           <img src="https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg" alt />
@@ -12,6 +12,8 @@
       <div class="browser-action inline-block">浏览动作</div>
       <div class="inline-block">2020/06/06 22:00:00</div>
     </div>
+    <!-- 无数据时,此元素将被索引到,被给他插入孩纸 不可省略 -->
+    <div id="nodata" class="m-list-nodata"></div>
   </MescrollVue>
 </template>
 
@@ -94,15 +96,13 @@ export default {
           if (res.data.resultFlag) {
             const { rows, total } = res.data.resultContent;
             this.mescrollVueList = this.mescrollVueList.concat(rows || []);
-            if (isNumber(rows.length)) {
-              this.$nextTick(() => {
-                if (this.mescrollVueList.length === total) {
-                  mescroll.endBySize(rows.length, total);
-                } else {
-                  mescroll.endSuccess(rows.length);
-                }
-              });
-            }
+            this.$nextTick(() => {
+              if (this.mescrollVueList.length === total) {
+                mescroll.endBySize(rows.length, total);
+              } else {
+                mescroll.endSuccess(rows.length);
+              }
+            });
           } else {
             mescroll.endSuccess(0);
           }
@@ -116,4 +116,9 @@ export default {
 </script>
 
 <style lang="less">
+.m-list-nodata > div {
+  padding: 15.714286rem 0 1.071429rem;
+  background: url("~assets/img/pagestatus/003.png") no-repeat scroll center;
+  background-size: 20rem;
+}
 </style>

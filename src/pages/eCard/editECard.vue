@@ -48,7 +48,7 @@
         <div>
           <div class="audio-container">
             <div class="audio-box">
-              <!-- <div @click="clickAudioPlay">覆盖audio</div> -->
+              <!-- <div @click="onClickAudioPlay">覆盖audio</div> -->
               <div @touchstart.prevent="touchstart" @touchend.prevent="touchend">覆盖audio</div>
               <audio ref="audio" class="audio" :src="eCardInfo.audioUrl" controls autoplay></audio>
             </div>
@@ -216,6 +216,7 @@ export default {
       },
       changeUrl: "",
       audioLocalUrl: "", // 音频本地url
+      audioIsPlaying: false,
       videoLocalUrl: "", // 视频本地url
       customVideo: "",
       readCurrentTimeInterval: "",
@@ -250,6 +251,15 @@ export default {
     playVideoDialog
   },
   mounted() {
+    // 点击播放按钮触发 或者 缓冲完毕时播放触发
+    this.$refs.audio.addEventListener('playing', () => {
+      console.log('audio.addEventListener playing')
+      this.audioIsPlaying = true
+    })
+    this.$refs.audio.addEventListener('pause', () => {
+      console.log('audio.addEventListener pause')
+      this.audioIsPlaying = false
+    })
     this.customVideo = document.getElementById("customVideo");
     this.readCurrentTimeInterval = setInterval(() => {
       this.videoCurrentTime = this.customVideo.currentTime;
@@ -328,9 +338,9 @@ export default {
       this.audioFile = file;
       this.eCardInfo.audioUrl = blobUrl
     },
-    clickAudioPlay() {
+    onClickAudioPlay() {
       const audio = this.$refs.audio;
-      audio.play();
+      this.audioIsPlaying ? audio.pause() : audio.play()
     },
     // 自定义音频触摸开始事件, 实现长按删除确认框
     touchstart() {

@@ -77,5 +77,12 @@ export default new Router({
         default: () => import(/* webpackChunkName: "layout" */'../pages/layout/layout.vue')
       }
     },
+    {
+      path: '/autograph',
+      name: 'autograph',
+      components: {
+        default: () => import(/* webpackChunkName: "autograph" */'../pages/autograph/autograph.vue')
+      }
+    },
   ]
 })

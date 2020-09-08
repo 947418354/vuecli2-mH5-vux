@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import vueLazyload from 'vue-lazyload'
 import vconsole from 'vconsole'
-
+console.dir(Vue)
 Vue.config.productionTip = false
 
 Vue.use(vueLazyload)
