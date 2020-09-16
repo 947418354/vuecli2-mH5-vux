@@ -77,14 +77,6 @@
         </div>
         <div style="padding-left:5px;">
           <div class="audio-box">
-            <!-- 单击表面音频根据 音频的有无 进行播放/选择文件操作 -->
-            <input
-              v-show="!eCardInfo.audioUrl"
-              class="file-input"
-              type="file"
-              accept="audio/*"
-              @change="changeAudio($event)"
-            />
             <div @click="clickAudioPlay">{{audioDuration}}"</div>
             <audio ref="audio" class="audio" :src="eCardInfo.audioUrl" controls autoplay></audio>
           </div>

@@ -502,6 +502,7 @@ export default {
         // 遍历器加入第一个promise,并发送第一波的某个请求
         iterable.push(apiFile.fileUpload(formData));
       }
+      // 如果视频有改变
       if (
         this.eCardInfo.videoUrl &&
         (this.eCardInfo.videoUrl.indexOf("blob:") !== -1 ||
