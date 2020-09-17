@@ -1,9 +1,10 @@
 <template>
+  <!-- eslint-disable -->
   <div class="my-cropper-dialog">
     <div class="dialog-relative">
       <div>
         <div class="image-container">
-          <img id="clip_image" :src="imgUrl" />
+          <img ref="originImg" id="clip_image" :src="imgUrl" @load="imgLoad" />
         </div>
         <div class="mask"></div>
         <div class="crop_loading">
@@ -23,6 +24,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 /**请用v-if控制此dialog的存在与否? */
 import Cropper from "cropperjs";
 import "cropperjs/dist/cropper.css";
@@ -31,58 +33,43 @@ export default {
   props: {
     visible: {},
     imgUrl: {},
-    opt: {      // 构建cropper实例时的配置参数
+    // 构建cropper实例时的配置参数
+    opt: {
       default: () => ({}),
       type: Object
-    },
+    }
   },
   data() {
-    return {
-      preview: null
-    };
-  },
-  mounted() {
-    this.preview = document.getElementById("clip_image");
-    // const opt = {
-    //   resultObj: null
-    // };
-    // const cropper = new Cropper(image, {
-    //   crop(event) {
-    //     console.log(event.detail.x);
-    //     console.log(event.detail.y);
-    //     console.log(event.detail.width);
-    //     console.log(event.detail.height);
-    //     console.log(event.detail.rotate);
-    //     console.log(event.detail.scaleX);
-    //     console.log(event.detail.scaleY);
-    //   }
-    // });
-    this.cropper = new Cropper(this.preview, {
-      aspectRatio: this.opt.aspectRatio || 5 / 4,   // 裁剪区定型,宽高比
-      autoCropArea: this.opt.autoCropArea || 1,
-      viewMode: 1,
-      guides: this.opt.aspectRatio == "Free" ? false : true,
-      cropBoxResizable: this.opt.aspectRatio == "Free" ? false : true,
-      cropBoxMovable: this.opt.aspectRatio == "Free" ? false : true,
-      dragCrop: this.opt.aspectRatio == "Free" ? false : true,
-      background: false,
-      checkOrientation: true,
-      checkCrossOrigin: true,
-      zoomable: false,
-      zoomOnWheel: false,
-      center: false,
-      toggleDragModeOnDblclick: false,
-      ready: () => {
-        // console.log(self.cropper.rotate(90))
-        if (this.opt.aspectRatio == "Free") {
-          let cropBox = self.cropper.cropBox;
-          cropBox.querySelector("span.cropper-view-box").style.outline = "none";
-          self.cropper.disable();
-        }
-      }
-    });
+    return {};
   },
   methods: {
+    // 原始图片加载完成后才new Cropper,因为需要读取originImg的宽高
+    imgLoad() {
+      this.cropper = new Cropper(this.$refs.originImg, {
+        aspectRatio: this.opt.aspectRatio || 3 / 2, // 裁剪区定型,宽高比
+        autoCropArea: this.opt.autoCropArea || 1,
+        viewMode: 1,
+        guides: this.opt.aspectRatio == "Free" ? false : true,
+        cropBoxResizable: this.opt.aspectRatio == "Free" ? false : true,
+        cropBoxMovable: this.opt.aspectRatio == "Free" ? false : true,
+        dragCrop: this.opt.aspectRatio == "Free" ? false : true,
+        background: false,
+        checkOrientation: false,
+        checkCrossOrigin: true,
+        zoomable: false,
+        zoomOnWheel: false,
+        center: false,
+        toggleDragModeOnDblclick: false,
+        ready: () => {
+          // console.log(self.cropper.rotate(90))
+          if (this.opt.aspectRatio == "Free") {
+            let cropBox = self.cropper.cropBox;
+            cropBox.querySelector("span.cropper-view-box").style.outline = "none";
+            self.cropper.disable();
+          }
+        }
+      });
+    },
     clickConfirm() {
       let self = this;
       let image = new Image();
