@@ -43,6 +43,12 @@ body {
   overflow-y: scroll;
   position: relative;
 }
+// 若要使弹性项目的孩子高度随弹性项目保持一致 请使用绝对定位
+.flex-item-child {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
 .flex-between {
   display: flex;
   justify-content: space-between;
