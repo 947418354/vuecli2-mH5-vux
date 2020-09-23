@@ -53,12 +53,10 @@ body {
   display: flex;
   justify-content: space-between;
 }
-.img-box {
-  display: inline-block;
-}
 .img-box > img {
   width: 100%;
   height: 100%;
+  display: block;
 }
 .inline-block {
   display: inline-block;

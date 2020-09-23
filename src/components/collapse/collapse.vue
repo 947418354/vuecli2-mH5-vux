@@ -3,7 +3,7 @@
   <div class="comp-collapse">
     <div class="flex-between" @click="onClickSpindle">
       <div class="title">{{title}}</div>
-      <div>
+      <div class="item-right">
         <x-icon v-show="isExtend" type="ios-arrow-up" size="30"></x-icon>
         <x-icon v-show="!isExtend" type="ios-arrow-down" size="30"></x-icon>
       </div>
@@ -135,6 +135,10 @@ export default {
   .flex-between {
     display: flex;
     justify-content: space-between;
+  }
+  .item-right {
+    display: flex;
+    align-items: center;
   }
   .collapse-wrap {
     will-change: height;
