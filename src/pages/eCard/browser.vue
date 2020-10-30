@@ -84,7 +84,6 @@ export default {
         };
         const { list, total } = resultContent;
         this.browserList = this.browserList.concat(list || []);
-        // if (isNumber(list.length)) {
         this.$nextTick(() => {
           if (this.browserList.length >= total) {
             mescroll.endBySize(list.length, total);
@@ -92,7 +91,6 @@ export default {
             mescroll.endSuccess(list.length);
           }
         });
-        // }
       }, 2000);
       /*request
         .queryMsProduct()

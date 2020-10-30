@@ -1,7 +1,7 @@
 <template>
   <!-- eslint-disable -->
   <div class="jiu-dialog" v-show="visible">
-    <div class="dialog-relative" @click="onClickMask">
+    <div class="dialog-relative" @click.stop="onClickMask">
       <div class="dialog-body">
         <div class="jiu-container">
           <div v-for="(item, i) of list" :key="item.code" class="jiu-item" @click="onClickJiu(item.value)">
@@ -10,10 +10,6 @@
             </div>
             <p>{{item.label}}</p>
           </div>
-          <div class="jiu-item"></div>
-          <div class="jiu-item"></div>
-          <div class="jiu-item"></div>
-          <div class="jiu-item"></div>
         </div>
         <div>
           <button class="cancel-btn">取消</button>
@@ -89,7 +85,7 @@ export default {
     background: #fff;
     border-radius: 8px;
     overflow: hidden;
-    width: 320px;
+    width: 100%;
   }
   .jiu-container {
     display: flex;

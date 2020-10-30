@@ -31,6 +31,7 @@
           type="text"
           @click="onClickComplete">完成
         </button>
+        <div class="share-img-box img-box" v-show="isShare()" @click.stop="onClickShare"><img :src="shareDataUrl" alt=""></div>
         <slot name="right"/>
       </div>
     </div>
@@ -91,8 +92,14 @@ export default {
     onClickComplete: debounce(() => {
       eventBus.$emit('ebOnClickComplete')
     }, 500),
+    onClickShare: debounce(() => {
+      eventBus.$emit('ebOnClickShare')
+    }, 500),
     getIsComplete() {
       return this.$router.currentRoute.name === 'editECard'
+    },
+    isShare() {
+      return ['tuiguangProductDetail'].indexOf(this.$router.currentRoute.name) !== -1
     },
   },
 }

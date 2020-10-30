@@ -58,6 +58,14 @@ body {
   height: 100%;
   display: block;
 }
+button {
+  outline: none;
+}
+.img-btn {
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+}
 .inline-block {
   display: inline-block;
 }
