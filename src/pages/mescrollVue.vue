@@ -1,6 +1,6 @@
 <template>
   <!-- eslint-disable -->
-  <MescrollVue :down="mescrollDown" :up="mescrollUp" class="scroll-cont">
+  <MescrollVue @init="mescrollInit" :down="mescrollDown" :up="mescrollUp" class="scroll-cont">
     <!-- 以下内容插入默认插槽div下 -->
     <div class="card-three" v-for="(item, i) of mescrollVueList" :key="item.id">
       <div class="inline-block">
@@ -52,6 +52,9 @@ export default {
     MescrollVue
   },
   methods: {
+    mescrollInit(mescroll) {
+      this.mescroll = mescroll;
+    },
     upCallback(page, mescroll) {
       // console.log("上拉回调");
       if (page.num === 1) {
@@ -116,6 +119,9 @@ export default {
 </script>
 
 <style lang="less">
+.scroll-cont {
+  height: 467px;
+}
 .m-list-nodata > div {
   padding: 15.714286rem 0 1.071429rem;
   background: url("~assets/img/pagestatus/003.png") no-repeat scroll center;

@@ -99,7 +99,7 @@ export default {
       return this.$router.currentRoute.name === 'editECard'
     },
     isShare() {
-      return ['tuiguangProductDetail'].indexOf(this.$router.currentRoute.name) !== -1
+      return ['tuiguangProductDetail'].includes(this.$router.currentRoute.name)
     },
   },
 }
