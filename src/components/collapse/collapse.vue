@@ -2,7 +2,9 @@
   <!-- eslint-disable -->
   <div class="comp-collapse">
     <div class="flex-between" @click="onClickSpindle">
-      <div class="title">{{title}}</div>
+      <slot name="title">
+        <div class="title">{{title}}</div>
+      </slot>
       <div class="item-right">
         <x-icon v-show="isExtend" type="ios-arrow-up" size="30"></x-icon>
         <x-icon v-show="!isExtend" type="ios-arrow-down" size="30"></x-icon>
