@@ -1,9 +1,13 @@
 'use strict'
 const path = require('path')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 const vuxLoader = require('vux-loader')
+
+//引入多页面支持
+var multipageHelper = require('./multipage-helper')
 
 function resolve(dir) {
   return path.join(__dirname, '..', dir)
@@ -13,9 +17,9 @@ function resolve(dir) {
 
 const webpackBaseConfig = {
   context: path.resolve(__dirname, '../'),
-  entry: {
-    app: './src/main.js'
-  },
+  entry: Object.assign({
+    index: './src/main.js'
+  }, multipageHelper.getEntries()),
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -68,6 +72,9 @@ const webpackBaseConfig = {
       }
     ]
   },
+  plugins: [
+    ...multipageHelper.getProdHtmlWebpackPluginList()
+  ],
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue
     // source contains it (although only uses it if it's native).

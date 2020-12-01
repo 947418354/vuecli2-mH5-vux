@@ -4,10 +4,6 @@ const semver = require('semver')
 const packageConfig = require('../package.json')
 const shell = require('shelljs')
 
-function exec (cmd) {
-  return require('child_process').execSync(cmd).toString().trim()
-}
-
 const versionRequirements = [
   {
     name: 'node',
@@ -15,14 +11,6 @@ const versionRequirements = [
     versionRequirement: packageConfig.engines.node
   }
 ]
-
-if (shell.which('npm')) {
-  versionRequirements.push({
-    name: 'npm',
-    currentVersion: exec('npm --version'),
-    versionRequirement: packageConfig.engines.npm
-  })
-}
 
 module.exports = function () {
   const warnings = []
