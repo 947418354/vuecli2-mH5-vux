@@ -1,6 +1,6 @@
 <template>
   <div>
-    <autograph></autograph>
+    <autograph :disabled="true"></autograph>
   </div>
 </template>
 

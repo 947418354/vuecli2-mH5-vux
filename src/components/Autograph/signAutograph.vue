@@ -79,7 +79,7 @@ export default {
       draw: null,
       isShowSignAutograph: true,
       isInWechat,
-      _disabled: false,
+      _disabled: this.disabled,
     }
   },
   computed: {
