@@ -3,21 +3,21 @@
   <div class="comp-collapse">
     <div class="flex-between" @click="onClickSpindle">
       <slot name="title">
-        <div class="title">{{title}}</div>
+        <div class="title">{{ title }}</div>
       </slot>
       <div class="item-right">
-        <x-icon v-show="isExtend" type="ios-arrow-up" size="30"></x-icon>
-        <x-icon v-show="!isExtend" type="ios-arrow-down" size="30"></x-icon>
+        <x-icon v-show="currentIsExtend" type="ios-arrow-up" size="30"></x-icon>
+        <x-icon v-show="!currentIsExtend" type="ios-arrow-down" size="30"></x-icon>
       </div>
     </div>
     <el-collapse-transition>
-    <!-- <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave"> -->
-      <div v-show="isExtend" class="collapse-wrap">
+      <!-- <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave"> -->
+      <div v-show="currentIsExtend" class="collapse-wrap">
         <div ref="content1">
           <slot></slot>
         </div>
       </div>
-    <!-- </transition> -->
+      <!-- </transition> -->
     </el-collapse-transition>
   </div>
 </template>
@@ -30,30 +30,39 @@ import ElCollapseTransition from "./collapseTransition";
 export default {
   props: {
     title: {},
+    isExtend: {
+      default: false,
+    },
   },
   data() {
     return {
-      isExtend: false,
-      contentHeight: 0
+      currentIsExtend: this.isExtend,
+      contentHeight: 0,
     };
   },
   watch: {
-    // isExtend: {
-    //   handler: function(n) {
-    //     if (n) {
-    //       this.contentHeight = this.$refs.content1.clientHeight + "px";
-    //     } else {
-    //       this.contentHeight = 0;
-    //     }
-    //   }
-    // }
+    isExtend() {
+      this.currentIsExtend = this.isExtend;
+    },
+    currentIsExtend: {
+      immediate: true,
+      handler: function (n) {
+        this.$nextTick(() => {
+          if (n) {
+            this.contentHeight = this.$refs.content1.clientHeight + "px";
+          } else {
+            this.contentHeight = 0;
+          }
+        });
+      },
+    },
   },
   components: {
-    ElCollapseTransition
+    ElCollapseTransition,
   },
   methods: {
     onClickSpindle() {
-      this.isExtend = !this.isExtend;
+      this.currentIsExtend = !this.currentIsExtend;
     },
     beforeEnter(el) {
       // addClass(el, 'collapse-transition');
@@ -119,8 +128,8 @@ export default {
       el.style.overflow = el.dataset.oldOverflow;
       el.style.paddingTop = el.dataset.oldPaddingTop;
       el.style.paddingBottom = el.dataset.oldPaddingBottom;
-    }
-  }
+    },
+  },
 };
 </script>
 

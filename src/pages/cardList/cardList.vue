@@ -4,8 +4,13 @@
     <div class="header-title-height">
       <div class="zh-header-container">
         <div class="left-item">
-          <div style="position: relative;">
-            <x-icon class="x-icon-svg" type="ios-arrow-thin-left" size="40" @click="goBack"></x-icon>
+          <div style="position: relative">
+            <x-icon
+              class="x-icon-svg"
+              type="ios-arrow-thin-left"
+              size="40"
+              @click="goBack"
+            ></x-icon>
           </div>
         </div>
         <div class="title">页标题</div>
@@ -22,8 +27,12 @@
         </div>
       </div>
       <div class="body-block">
-        <div class="title">{item.title}}是多少实打实打算说到底说到底是谁的实打实的都是</div>
-        <div class="content">{item.summary}}sd士大夫士大夫士大夫士大夫士大夫士大夫士大夫士大夫士大夫士大夫士大夫士大夫手动阀手动阀</div>
+        <div class="title">
+          {item.title}}是多少实打实打算说到底说到底是谁的实打实的都是
+        </div>
+        <div class="content">
+          {item.summary}}sd士大夫士大夫士大夫士大夫士大夫士大夫士大夫士大夫士大夫士大夫士大夫士大夫手动阀手动阀
+        </div>
         <div class="date">
           <span>{formatterDateTime(item.gmtModified)}}</span>
         </div>
@@ -38,17 +47,51 @@
             <img :src="imgUrl" alt />
           </div>
         </div>
-        <div class="body-block" style="width: 49%;">
+        <div class="body-block" style="width: 49%">
           <div>
             <div class="title">{item.title}}</div>
             <div class="content">{item.summary}}</div>
           </div>
         </div>
-        <div class="data-item" style="width: 23%;">
+        <div class="data-item" style="width: 23%">
           <span class="date-span">{formatterDateTime(item.gmtModified)}}</span>
         </div>
       </div>
     </div>
+    <Swipeout>
+      <div v-for="(item, index) in 3" :key="index">
+        <swipeout-item transition-mode="follow">
+          <div slot="right-menu">
+            <button class="opt-btn bg"></button>
+            <swipeout-button
+              type="primary"
+              class="delete-icon"
+            />
+          </div>
+          <div slot="content" class="card-three" style="background: red">
+            <!-- <div class="inline-block">{{ele.id}}</div> -->
+            <div class="item-content">
+              <div class>
+                <div class="img-box">
+                  <img :src="imgUrl" alt />
+                </div>
+              </div>
+              <div class="body-block" style="width: 49%">
+                <div>
+                  <div class="title">{item.title}}</div>
+                  <div class="content">{item.summary}}</div>
+                </div>
+              </div>
+              <div class="data-item" style="width: 23%">
+                <span class="date-span"
+                  >{formatterDateTime(item.gmtModified)}}</span
+                >
+              </div>
+            </div>
+          </div>
+        </swipeout-item>
+      </div>
+    </Swipeout>
   </div>
 </template>
 
@@ -57,17 +100,24 @@
  * 卡片列表页
  * 枚举部分常用卡片列表卡片布局
  */
+import { Swipeout, SwipeoutItem, SwipeoutButton } from "vux";
+
 export default {
   data() {
     return {
-      imgUrl: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg',
-    }
+      imgUrl: "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg",
+    };
+  },
+  components: {
+    Swipeout,
+    SwipeoutItem,
+    SwipeoutButton,
   },
   methods: {
     goBack() {
       history.back();
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -174,6 +224,12 @@ export default {
       transform: translate(0, -50%);
       position: absolute;
     }
+  }
+  .opt-btn {
+    border: none;
+    width: 80px;
+    height: 100%;
+    background-image: url('../../assets/img/eCard/star.png');
   }
 }
 </style>

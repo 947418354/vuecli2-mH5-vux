@@ -50,6 +50,13 @@ export default new Router({
       },
     },
     {
+      path: '/form',
+      name: 'form',
+      components: {
+        default: () => import(/* webpackChunkName: "form" */'@/pages/form/form')
+      },
+    },
+    {
       path: '/qrcode',
       name: 'qrcode',
       components: {
