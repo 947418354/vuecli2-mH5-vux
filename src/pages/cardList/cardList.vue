@@ -59,38 +59,37 @@
       </div>
     </div>
     <Swipeout>
-      <div v-for="(item, index) in 3" :key="index">
-        <swipeout-item transition-mode="follow">
-          <div slot="right-menu">
-            <button class="opt-btn bg"></button>
-            <swipeout-button
-              type="primary"
-              class="delete-icon"
-            />
-          </div>
-          <div slot="content" class="card-three" style="background: red">
-            <!-- <div class="inline-block">{{ele.id}}</div> -->
-            <div class="item-content">
-              <div class>
-                <div class="img-box">
-                  <img :src="imgUrl" alt />
-                </div>
-              </div>
-              <div class="body-block" style="width: 49%">
-                <div>
-                  <div class="title">{item.title}}</div>
-                  <div class="content">{item.summary}}</div>
-                </div>
-              </div>
-              <div class="data-item" style="width: 23%">
-                <span class="date-span"
-                  >{formatterDateTime(item.gmtModified)}}</span
-                >
+      <swipeout-item
+        v-for="(item, index) in 3"
+        :key="index"
+        transition-mode="follow"
+      >
+        <div slot="right-menu">
+          <button class="opt-btn bg"></button>
+          <swipeout-button type="primary" class="delete-icon" />
+        </div>
+        <div slot="content" class="card-three" style="background: red">
+          <!-- <div class="inline-block">{{ele.id}}</div> -->
+          <div class="item-content">
+            <div class>
+              <div class="img-box">
+                <img :src="imgUrl" alt />
               </div>
             </div>
+            <div class="body-block" style="width: 49%">
+              <div>
+                <div class="title">{item.title}}</div>
+                <div class="content">{item.summary}}</div>
+              </div>
+            </div>
+            <div class="data-item" style="width: 23%">
+              <span class="date-span"
+                >{formatterDateTime(item.gmtModified)}}</span
+              >
+            </div>
           </div>
-        </swipeout-item>
-      </div>
+        </div>
+      </swipeout-item>
     </Swipeout>
   </div>
 </template>
@@ -229,7 +228,7 @@ export default {
     border: none;
     width: 80px;
     height: 100%;
-    background-image: url('../../assets/img/eCard/star.png');
+    background-image: url("../../assets/img/eCard/star.png");
   }
 }
 </style>

@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "App"
+  name: "App",
 };
 </script>
 
@@ -46,10 +46,23 @@ body {
   width: 100%;
   height: 100%;
 }
+.fasten-item {
+  flex-shrink: 0;
+}
 .flex-between {
   display: flex;
   justify-content: space-between;
 }
+.flex-between-center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.flex-align-center {
+  display: flex;
+  align-items: center;
+}
+
 .img-box > img {
   width: 100%;
   height: 100%;

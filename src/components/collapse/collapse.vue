@@ -1,7 +1,7 @@
 <template>
   <!-- eslint-disable -->
   <div class="comp-collapse">
-    <div class="flex-between" @click="onClickSpindle">
+    <div class="title-cont flex-between" @click="onClickSpindle">
       <slot name="title">
         <div class="title">{{ title }}</div>
       </slot>
@@ -143,6 +143,9 @@ export default {
   }
 }
 .comp-collapse {
+  .title-cont {
+    align-items: center
+  }
   .flex-between {
     display: flex;
     justify-content: space-between;
@@ -160,9 +163,9 @@ export default {
     // transition: height 2s;
   }
   .collapse-transition {
-    color: red;
-    transition: 10s height ease-in-out, 10s padding-top ease-in-out,
-      10s padding-bottom ease-in-out;
+    // color: red;
+    transition: 1s height ease-in-out, 1s padding-top ease-in-out,
+      1s padding-bottom ease-in-out;
   }
 }
 </style>

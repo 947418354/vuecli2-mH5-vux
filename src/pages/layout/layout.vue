@@ -9,7 +9,7 @@
       <button @click="isInsert = !isInsert">isInsert</button>
       <collapse title="aaa">
         <div>
-          <div>aaaaaa</div>
+          <div>aaaaaa固定内容</div>
           <div v-show="isInsert">bbbbbbbbbb</div>
         </div>
       </collapse>
