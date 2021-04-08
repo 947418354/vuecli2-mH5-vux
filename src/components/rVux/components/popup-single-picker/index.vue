@@ -51,7 +51,6 @@
 
 <script>
 import Picker from '../picker'
-import Cell from '../cell'
 import Popup from '../popup'
 import PopupHeader from '../popup-header'
 import InlineDesc from '../inline-desc'
@@ -78,7 +77,6 @@ export default {
   mixins: [uuidMixin],
   components: {
     Picker,
-    Cell,
     Popup,
     PopupHeader,
     Flexbox,
@@ -106,7 +104,7 @@ export default {
     placeholder: String,
     columns: {
       type: Number,
-      default: 0
+      default: 1
     },
     fixedColumns: {
       type: Number,

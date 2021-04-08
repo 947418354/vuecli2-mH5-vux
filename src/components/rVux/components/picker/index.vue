@@ -17,6 +17,9 @@ import Manager from './chain'
 
 export default {
   name: 'picker',
+  model: {
+    prop: 'mValue'
+  },
   components: {
     Flexbox,
     FlexboxItem
@@ -29,22 +32,24 @@ export default {
     }
   },
   mounted () {
+    console.log('挂载后')
     this.uuid = Math.random().toString(36).substring(3, 8)
     this.$nextTick(() => {
+      console.log(this.currentData, this.currentValue)
       this.render(this.currentData, this.currentValue)
     })
   },
   props: {
     data: Array,
-    // columns: {
-    //   type: Number,
-    //   default: 0
-    // },
+    columns: {
+      type: Number,
+      default: 1
+    },
     fixedColumns: {
       type: Number,
       default: 0
     },
-    value: String,
+    mValue: String,
     itemClass: {
       type: String,
       default: 'scroller-item'
@@ -59,6 +64,7 @@ export default {
       return `#vux-picker-${this.uuid}-${i}`
     },
     render (data, value) {
+      console.log('465789789', this.currentData)
       this.count = this.currentData.length
       const _this = this
       if (!data || !data.length) {
@@ -70,16 +76,16 @@ export default {
         for (let i = 0; i < count; i++) {
           if (process.env.NODE_ENV === 'development' &&
             typeof data[i][0] === 'undefined' &&
-            // isArray(this.data) &&
+            Array.isArray(this.data) &&
             this.data[0] &&
             typeof this.data[0].value !== 'undefined' &&
             !this.columns) {
             console.error('[VUX error] 渲染出错，如果为联动模式，需要指定 columns(列数)')
           }
-          // this.$set(_this.currentValue, i, data[i][0].value || data[i][0])
-          this.currentValue = data[i][0].value || data[i][0]
+          this.$set(_this.currentValue, i, data[i][0].value || data[i][0])
         }
       }
+
       for (let i = 0; i < data.length; i++) {
         /**
         * Still don't know why this happens
@@ -163,28 +169,35 @@ export default {
   },
   data () {
     return {
-      columns: 1,
+      value: [],
       scroller: [],
       count: 0,
       uuid: '',
       currentData: this.data,
-      currentValue: this.value
+      currentValue: [this.mValue]
     }
   },
   watch: {
+    mValue: {
+      immediate: true,
+      handler: function() {
+        this.value = [this.mValue]
+      }
+    },
     value (val) {
       if (JSON.stringify(val) !== JSON.stringify(this.currentValue)) {
         this.currentValue = val
       }
     },
     currentValue (val, oldVal) {
-      // console.log('watch currentValue')
+      // console.log('watch currentValue', val)
       this.$emit('input', Array.isArray(val) ? val[0] : val)
       // render all the scroller for chain datas
       if (this.columns !== 0) {
         if (val.length > 0) {
           if (JSON.stringify(val) !== JSON.stringify(oldVal)) {
             this.currentData = this.store.getColumns(val)
+            console.log('某次赋值this.currentData', this.currentData)
             this.$nextTick(function () {
               this.render(this.currentData, val)
             })
@@ -209,7 +222,8 @@ export default {
         this.currentData = val
       }
     },
-    currentData (newData) {
+    currentData (newData, o) {
+      console.log('非立即监听currentData', newData, o)
       if (Object.prototype.toString.call(newData[0]) === '[object Array]') {
         this.$nextTick(() => {
           this.render(newData, this.currentValue)

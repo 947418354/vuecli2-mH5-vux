@@ -1,6 +1,10 @@
 <template>
   <!-- eslint-disable -->
   <div>
+    <!-- <singlePicker
+      v-model="pickerValue"
+      :data="data"
+    ></singlePicker> -->
     <popupSinglePicker
       title="表单条目标题"
       v-model="pickerValue"
@@ -17,6 +21,7 @@
 
 <script>
 /* eslint-disable */
+import singlePicker from '@/components/rVux/components/picker'
 import popupSinglePicker from "@/components/rVux/components/popup-single-picker";
 import { PopupPicker  } from "vux";
 
@@ -24,7 +29,7 @@ export default {
   props: {},
   data() {
     return {
-      pickerValue: "",
+      pickerValue: "b",
       data: [
         {
           name: "2019届5班",
@@ -59,6 +64,7 @@ export default {
     },
   },
   components: {
+    singlePicker,
     popupSinglePicker,
     PopupPicker ,
   },
