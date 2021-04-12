@@ -7,7 +7,11 @@
       </slot>
       <div class="item-right">
         <x-icon v-show="currentIsExtend" type="ios-arrow-up" size="30"></x-icon>
-        <x-icon v-show="!currentIsExtend" type="ios-arrow-down" size="30"></x-icon>
+        <x-icon
+          v-show="!currentIsExtend"
+          type="ios-arrow-down"
+          size="30"
+        ></x-icon>
       </div>
     </div>
     <el-collapse-transition>
@@ -144,7 +148,13 @@ export default {
 }
 .comp-collapse {
   .title-cont {
-    align-items: center
+    align-items: center;
+  }
+  .title {
+    font-size: 15px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #4a4a4a;
   }
   .flex-between {
     display: flex;
