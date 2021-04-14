@@ -11,19 +11,26 @@
       placeholder="请选择"
       :data="data"
     ></popupSinglePicker>
-    <popupPicker
-      title="popupPicker"
-      v-model="pickerValue1"
-      :data="data1"
-    ></popupPicker>
+    <popupSinglePicker
+      title="表单条目标题"
+      v-model="pickerValue"
+      placeholder="请选择"
+      :data="data"
+    >
+      <template slot="default" slot-scope="slotProps">
+        <div @click.stop="slotProps.onClick">自定义展示</div>
+      </template>
+    </popupSinglePicker>
+    <selector v-model="pickerValue" placeholder="请选择" :data="data"></selector>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
-import singlePicker from '@/components/rVux/components/picker'
+import singlePicker from "@/components/rVux/components/picker";
 import popupSinglePicker from "@/components/rVux/components/popup-single-picker";
-import { PopupPicker  } from "vux";
+import selector from "@/components/rVux/components/selector";
+import { PopupPicker } from "vux";
 
 export default {
   props: {},
@@ -66,7 +73,8 @@ export default {
   components: {
     singlePicker,
     popupSinglePicker,
-    PopupPicker ,
+    selector,
+    PopupPicker,
   },
   methods: {},
 };

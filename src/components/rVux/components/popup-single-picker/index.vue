@@ -1,24 +1,25 @@
 <template>
   <div class="vux-cell-box">
-    <div class="weui-cell vux-tap-active" :class="{'weui-cell_access': !disabled}" @click="onClick" v-show="showCell">
-      <div class="weui-cell__hd">
-        <slot name="title" label-class="weui-label" :label-style="labelStyles" :label-title="title">
-          <label class="weui-label" :class="labelClass" :style="labelStyles" v-if="title" v-html="title"></label>
-        </slot>
-        <inline-desc v-if="inlineDesc">{{ inlineDesc }}</inline-desc>
-      </div>
-      <div class="vux-cell-primary vux-popup-picker-select-box">
-        <div class="vux-popup-picker-select" :style="{textAlign: valueTextAlign}">
-          <!-- <span class="vux-popup-picker-value vux-cell-value" v-if="!displayFormat && !showName && value.length">{{value | array2string}}</span> -->
-          <span class="vux-popup-picker-value vux-cell-value" v-if="!displayFormat && value.length">{{value | value2name(data)}}</span>
-          <span class="vux-popup-picker-value vux-cell-value" v-if="displayFormat && value.length">{{ displayFormat(value, value2name(value, data)) }}</span>
-          <span v-if="!value.length && placeholder" v-text="placeholder" class="vux-popup-picker-placeholder vux-cell-placeholder"></span>
+    <slot :onClick="onClick">
+      <div class="weui-cell vux-tap-active" :class="{'weui-cell_access': !disabled}" @click="onClick" v-show="showCell">
+        <div class="weui-cell__hd">
+          <slot name="title" label-class="weui-label" :label-style="labelStyles" :label-title="title">
+            <label class="weui-label" :class="labelClass" :style="labelStyles" v-if="title" v-html="title"></label>
+          </slot>
+          <inline-desc v-if="inlineDesc">{{ inlineDesc }}</inline-desc>
+        </div>
+        <div class="vux-cell-primary vux-popup-picker-select-box">
+          <div class="vux-popup-picker-select" :style="{textAlign: valueTextAlign}">
+            <!-- <span class="vux-popup-picker-value vux-cell-value" v-if="!displayFormat && !showName && value.length">{{value | array2string}}</span> -->
+            <span class="vux-popup-picker-value vux-cell-value" v-if="!displayFormat && value.length">{{value | value2name(data)}}</span>
+            <span class="vux-popup-picker-value vux-cell-value" v-if="displayFormat && value.length">{{ displayFormat(value, value2name(value, data)) }}</span>
+            <span v-if="!value.length && placeholder" v-text="placeholder" class="vux-popup-picker-placeholder vux-cell-placeholder"></span>
+          </div>
+        </div>
+        <div class="weui-cell__ft">
         </div>
       </div>
-      <div class="weui-cell__ft">
-      </div>
-    </div>
-
+    </slot>
     <div v-transfer-dom="isTransferDom">
       <popup
       v-model="showValue"
