@@ -11,9 +11,9 @@
         <div class="vux-cell-primary vux-popup-picker-select-box">
           <div class="vux-popup-picker-select" :style="{textAlign: valueTextAlign}">
             <!-- <span class="vux-popup-picker-value vux-cell-value" v-if="!displayFormat && !showName && value.length">{{value | array2string}}</span> -->
-            <span class="vux-popup-picker-value vux-cell-value" v-if="!displayFormat && value.length">{{value | value2name(data)}}</span>
-            <span class="vux-popup-picker-value vux-cell-value" v-if="displayFormat && value.length">{{ displayFormat(value, value2name(value, data)) }}</span>
-            <span v-if="!value.length && placeholder" v-text="placeholder" class="vux-popup-picker-placeholder vux-cell-placeholder"></span>
+            <span class="vux-popup-picker-value vux-cell-value" v-if="!displayFormat && value">{{value | value2name(data)}}</span>
+            <span class="vux-popup-picker-value vux-cell-value" v-if="displayFormat && value">{{ displayFormat(value, value2name(value, data)) }}</span>
+            <span v-if="!value && placeholder" v-text="placeholder" class="vux-popup-picker-placeholder vux-cell-placeholder"></span>
           </div>
         </div>
         <div class="weui-cell__ft">
@@ -51,6 +51,9 @@
 </template>
 
 <script>
+/**
+ * data: [{name: '显示的', value: '字段存的'}]
+ */
 import Picker from '../picker'
 import Popup from '../popup'
 import PopupHeader from '../popup-header'
@@ -102,7 +105,10 @@ export default {
         return []
       }
     },
-    placeholder: String,
+    placeholder: {
+      type: String,
+      default: '请选择',
+    },
     columns: {
       type: Number,
       default: 1
@@ -183,7 +189,7 @@ export default {
     onPickerChange (val) {
       if (JSON.stringify(this.currentValue) !== JSON.stringify(val)) {
         // if has value, replace it
-        if (this.value.length) {
+        if (this.value) {
           const nowData = JSON.stringify(this.data)
           if (nowData !== this.currentData && this.currentData !== '[]') {
             this.tempValue = getObject(val)
@@ -198,7 +204,8 @@ export default {
     }
   },
   watch: {
-    value (val) {
+    value (val, oVal) {
+      if(!val && !oVal) return
       if (JSON.stringify(val) !== JSON.stringify(this.tempValue)) {
         this.tempValue = getObject(val)
         this.currentValue = getObject(val)
@@ -259,14 +266,6 @@ export default {
   &:after {
     .setBottomLine(#e5e5e5);
   }
-}
-.vux-popup-picker-value {
-  /* display: inline-block; */
-}
-.vux-popup-picker-header-menu {
-  text-align: left;
-  padding-left: 15px;
-  line-height: 44px;
 }
 .vux-popup-picker-header-menu-right {
   text-align: right;

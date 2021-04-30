@@ -1,6 +1,6 @@
 <template>
   <!-- eslint-disable -->
-  <div class="my-play-video-dialog" v-show="visible">
+  <div class="my-play-video-dialog" v-show="visible" v-transfer-dom>
     <div class="dialog-relative" @click="onClickMask">
       <div>
         <div class="video-box">
@@ -70,6 +70,8 @@ export default {
   .video-box {
     video {
       width: 100%;
+      height: 80vw;
+      object-fit: contain;
     }
   }
   .close {
